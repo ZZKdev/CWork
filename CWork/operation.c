@@ -1,14 +1,19 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include "operation.h"
 #include <WinSock2.h>
 #include "cJSON.h"
 
 void helloView()
 {
-	printf("欢迎使用本系统！\n");
-	printf("您可以使用以下功能\n");
+	printf("欢迎使用本系统\n!");
+	printf("你可以使用以下功能\n");
 	printf("1. 查询天气\n");
 	printf("0. 退出系统\n");
+	printf("哈哈哈");
+	/*printf("Welcome to my System!\n");
+	printf("You can use\n");
+	printf("1. searchWeather\n");
+	printf("0. quit\n");*/
 }
 
 void fetchAdcode(char *jsonString, char *adcode)
@@ -68,7 +73,7 @@ void fetchWeatherInfo(char *jsonString, weatherInfo* weather)
 void searchWeather()
 {
 	char address[52] = { 0 };
-	printf("输入搜索地点:");
+	printf("input address:");
 	scanf("%s", address);
 
 	
@@ -86,21 +91,21 @@ void searchWeather()
 	fetchJsonString(response, jsonString);
 	weatherInfo* weather = (weatherInfo *)malloc(sizeof(weatherInfo));
 	fetchWeatherInfo(jsonString, weather);
-	printf("%s", weather->city);
+	printf("%s\n", weather->city);
 	
 	free(response);
 }
 
-int main(void)
+/*int main(void)
 {
 	setUp();
-	SetConsoleOutputCP(65001);
+	
 	SetConsoleCP(65001);
 	int flag = -1;
 	helloView();
 	while (flag)
 	{
-		printf("请输入指令：");
+		printf("input command:");
 		scanf("%d", &flag);
 		switch (flag)
 		{
@@ -110,12 +115,12 @@ int main(void)
 		case 0:
 			break;
 		default:
-			printf("输入指令无效！\n");
+			printf("input error\n");
 			break;
 		}
 	}	
 	return 0;
-}    
+} */   
 
 
 void setUp()

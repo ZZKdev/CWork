@@ -21,6 +21,9 @@
     <ClCompile Include="operation.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="MyServer.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cJSON.h">
