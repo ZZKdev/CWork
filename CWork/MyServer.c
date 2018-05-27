@@ -9,7 +9,7 @@ int main(void)
 	struct sockaddr_in sockAddr;
 	memset(&sockAddr, 0, sizeof(sockAddr));
 	sockAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-	sockAddr.sin_port = htons(12345);
+	sockAddr.sin_port = htons(80);
 	sockAddr.sin_family = PF_INET;
 	bind(servSock, (SOCKADDR*)&sockAddr, sizeof(SOCKADDR));
 
@@ -17,7 +17,7 @@ int main(void)
 	
 	SOCKADDR clientAddr;
 	int iSize = sizeof(SOCKADDR);
-	char* buffer = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<h1>hello World</h1>";
+	char* buffer = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n<h1>hello World</h1>";
 	FILE* indexHtml = NULL;
 	if ((indexHtml = fopen("index.html", "rb")) == NULL)
 	{
@@ -34,11 +34,10 @@ int main(void)
 		int clientsock = accept(servSock, (SOCKADDR*)&clientAddr, &iSize);
 		printf("hello client");
 		send(clientsock, bufferHtml, strlen(bufferHtml), 0);
+		Sleep(1000);
+		shutdown(clientsock, SD_SEND);
 		closesocket(clientsock);
 	}
-	
-		
-	
 	
 
 	closesocket(servSock);
