@@ -118,12 +118,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cJSON.c" />
-    <ClCompile Include="MyServer.c" />
+    <ClCompile Include="main.c" />
     <ClCompile Include="operation.c" />
+    <ClCompile Include="route.c" />
+    <ClCompile Include="server.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cJSON.h" />
     <ClInclude Include="operation.h" />
+    <ClInclude Include="route.h" />
+    <ClInclude Include="server.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="request" />
