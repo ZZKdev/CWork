@@ -1,6 +1,6 @@
 #pragma once
 #define INDEX 0
-#define SEARCHWEATHER 1
+#define SEARCH_WEATHER 1
 
 
 int getRoute(char *bufferRecv);
