@@ -1,6 +1,26 @@
 #include "operation.h"
 #include <stdio.h>
 #include <WinSock2.h>
+#define index 0
+#define SEARCHWEATHER 1
+
+int getRoute(char *bufferRecv)
+{
+	char *start = strchr(bufferRecv, ' ');
+	char *end = strchr(bufferRecv + (start - bufferRecv + 1), ' ');
+	
+	char url[48] = { 0 };
+	strncpy(url, start + 1, end - start - 1);
+
+	if ((stricmp("/", url)) == 0)
+	{
+		return 0;
+	}
+	else if (stricmp("/searchWeather", url) == 0)
+	{
+		return 1;
+	}
+}
 
 int main(void)
 {
@@ -17,7 +37,7 @@ int main(void)
 	
 	SOCKADDR clientAddr;
 	int iSize = sizeof(SOCKADDR);
-	char* buffer = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n<h1>hello World</h1>";
+	char* buffer = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n";
 	FILE* indexHtml = NULL;
 	if ((indexHtml = fopen("index.html", "rb")) == NULL)
 	{
@@ -25,16 +45,31 @@ int main(void)
 		return;
 	}
 	char bufferHtml[4096] = { 0 };
+	char bufferRecv[1024] = { 0 };
 	strcat(bufferHtml, buffer);
-	fread(bufferHtml + strlen(buffer), 1, 236, indexHtml);
+	fread(bufferHtml + strlen(buffer), 1, 428, indexHtml);
 	fclose(indexHtml);
 	
 	while (1)
 	{
 		int clientsock = accept(servSock, (SOCKADDR*)&clientAddr, &iSize);
 		printf("hello client");
-		send(clientsock, bufferHtml, strlen(bufferHtml), 0);
-		Sleep(1000);
+		recv(clientsock, bufferRecv, 1024, 0);
+		int route = getRoute(bufferRecv);
+		switch (route)
+		{
+		case index:
+			send(clientsock, bufferHtml, strlen(bufferHtml), 0);
+			break;
+		case SEARCHWEATHER:
+			send(clientsock, bufferRecv, strlen(bufferRecv), 0);
+			break;
+		default:
+			printf("fdsafd"); 
+			break;
+		}
+		
+		
 		shutdown(clientsock, SD_SEND);
 		closesocket(clientsock);
 	}
