@@ -1,7 +1,11 @@
 #include <WinSock2.h>
+#include <stdio.h>
+#include "controllers.h"
+#include "route.h"
+#include "view.h"
+#include "server.h"
 
-
-int serverRun()
+int loadConfig()
 {
 	setUp();
 	int servSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -16,8 +20,24 @@ int serverRun()
 	return servSock;
 }
 
-void setResponseHeader(char* response)
+
+
+void serverRun(int servSock)
 {
-	char* Header = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n";
-	strcat(response, Header);
+	SOCKADDR clientAddr;
+	int iSize = sizeof(SOCKADDR);
+	char requestHeader[1024] = { 0 };
+	while (1)
+	{
+		int clientsock = accept(servSock, (SOCKADDR*)&clientAddr, &iSize);
+		recv(clientsock, requestHeader, 1024, 0);
+		log("%s",requestHeader);
+		char path[48] = { 0 };
+		getPath(requestHeader, path);
+		View responseView = viewRoute(path);
+		send(clientsock, responseView, strlen(responseView), 0);
+		free(responseView);
+		shutdown(clientsock, SD_SEND);
+		closesocket(clientsock);
+	}
 }

@@ -1,6 +1,7 @@
 #pragma once
-#define INDEX 0
-#define SEARCH_WEATHER 1
+
+#define View char*
 
 
-int getRoute(char *bufferRecv);
+void getPath(char *requestHeader, char *path);
+View viewRoute(char *path);

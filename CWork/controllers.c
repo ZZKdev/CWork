@@ -1,5 +1,5 @@
 ﻿#include <stdio.h>
-#include "operation.h"
+#include "controllers.h"
 #include <WinSock2.h>
 #include "cJSON.h"
 
@@ -203,4 +203,13 @@ void fetchJsonString( char *response, char *jsonString)
 		Arguments -- response和返回的json字符串
 	*/
     strcpy(jsonString, strstr(response, "\r\n\r\n") + 4);
+}
+void setResponseHeader(char* response)
+{
+	/*
+		desc -- 给响应设置响应头
+		Arguments -- 要设置响应头的响应
+	*/
+	char* Header = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n";
+	strcat(response, Header);
 }

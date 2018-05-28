@@ -18,9 +18,6 @@
     <ClCompile Include="cJSON.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="operation.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="route.c">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -30,12 +27,15 @@
     <ClCompile Include="server.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="view.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="controllers.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cJSON.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="operation.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="route.h">
@@ -44,9 +44,18 @@
     <ClInclude Include="server.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="view.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="controllers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="request">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="index.html">
       <Filter>资源文件</Filter>
     </None>
   </ItemGroup>

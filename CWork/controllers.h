@@ -29,5 +29,5 @@ void fetchAdcode(char *jsonString, char *adcode);
 void getAdcode(char *address, char *adcode);
 void fetchWeatherInfo(char *jsonString, weatherInfo* weather);
 void searchWeather();
-
+void setResponseHeader(char* response);
 #endif

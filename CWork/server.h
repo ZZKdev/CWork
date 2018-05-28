@@ -1,7 +1,6 @@
 #pragma once
 
-#define HEADER_LENGTH 59
+#define log printf
 
-
-int serverRun();
-void setResponseHeader(char* response);
+int loadConfig();
+void serverRun();
