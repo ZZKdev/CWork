@@ -28,6 +28,6 @@ void fetchJsonString( char *response, char *jsonString);
 void fetchAdcode(char *jsonString, char *adcode);
 void getAdcode(char *address, char *adcode);
 void fetchWeatherInfo(char *jsonString, weatherInfo* weather);
-void searchWeather();
+weatherInfo* searchWeather(char *address);
 void setResponseHeader(char* response);
 #endif

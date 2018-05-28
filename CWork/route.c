@@ -17,7 +17,21 @@ void getPath(char *requestHeader, char *path)
 	strncpy(path, start + 1, end - start - 1);
 }
 
-
+char* getArgument(char* path)
+{
+	/*
+		desc -- 从请求路径中获取参数
+		Arguments -- 请求路径
+		returns -- 请求参数
+	*/
+	char* start = strchr(path, '=');
+	if (start != NULL)
+	{
+		char *argument = malloc(strlen(start));
+		return strcpy(argument, start + 1);
+	}
+	return NULL;
+}
 
 View viewRoute(char *path)
 {
@@ -28,16 +42,15 @@ View viewRoute(char *path)
 	View view = (View)malloc(2048);
 	memset(view, 0, 2048);
 	setResponseHeader(view);
-
-	if ((stricmp("/", path)) == 0)
+	char *argument = getArgument(path);
+	if ((stricmp(path, "/")) == 0)
 	{		
 		return indexView(view);
 	}
-	else if (stricmp("/searchWeather", path) == 0)
+	else if (strstr(path, "/searchWeather") != NULL)
 	{
-		printf("fdsaf");
-		return indexView(view);
+		return weatherView(view, argument);
 	}
-	printf("ccccc");
-	return view;
+
+	return strcat(view, "<h1>404</h1>");
 }

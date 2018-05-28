@@ -35,9 +35,13 @@ void serverRun(int servSock)
 		char path[48] = { 0 };
 		getPath(requestHeader, path);
 		View responseView = viewRoute(path);
+
 		send(clientsock, responseView, strlen(responseView), 0);
-		free(responseView);
+		
 		shutdown(clientsock, SD_SEND);
+		printf("\n\n");
+		printf(responseView);
+		free(responseView);
 		closesocket(clientsock);
 	}
 }

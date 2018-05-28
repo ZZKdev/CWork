@@ -3,18 +3,6 @@
 #include <WinSock2.h>
 #include "cJSON.h"
 
-void helloView()
-{
-	printf("欢迎使用本系统\n!");
-	printf("你可以使用以下功能\n");
-	printf("1. 查询天气\n");
-	printf("0. 退出系统\n");
-	printf("哈哈哈");
-	/*printf("Welcome to my System!\n");
-	printf("You can use\n");
-	printf("1. searchWeather\n");
-	printf("0. quit\n");*/
-}
 
 void fetchAdcode(char *jsonString, char *adcode)
 {
@@ -36,7 +24,7 @@ void getAdcode(char *address,char *adcode)
 		Arguments -- 目标地址和返回的adcode
 	*/
 	int sock = linkTarget("106.11.12.1", 80);
-	char url[128] = { 0 };
+	char url[256] = { 0 };
 	strcat(url, SEARCH_ADCODE);
 	strcat(url, address);
 
@@ -46,6 +34,7 @@ void getAdcode(char *address,char *adcode)
 
 	fetchAdcode(jsonString, adcode);
 
+	printf("%s", adcode);
 	free(response);
 	closesocket(sock);
 }
@@ -70,17 +59,17 @@ void fetchWeatherInfo(char *jsonString, weatherInfo* weather)
 
 }
 
-void searchWeather()
-{
-	char address[52] = { 0 };
-	printf("input address:");
-	scanf("%s", address);
-
-	
+weatherInfo* searchWeather(char *address)
+{	
+	/*
+		desc -- 查询地址的当天的天气信息
+		Arguments -- 请求地址
+		returns -- 地址信息结构体
+	*/
 	char adcode[12] = { 0 };
 	getAdcode(address, adcode);
-	
-	char url[128] = { 0 };
+
+	char url[256] = { 0 };
 	strcat(url, SEARCH_WEATHER_STRING);
 	strcat(url, adcode);
 
@@ -91,36 +80,9 @@ void searchWeather()
 	fetchJsonString(response, jsonString);
 	weatherInfo* weather = (weatherInfo *)malloc(sizeof(weatherInfo));
 	fetchWeatherInfo(jsonString, weather);
-	printf("%s\n", weather->city);
-	
-	free(response);
-}
 
-/*int main(void)
-{
-	setUp();
-	
-	SetConsoleCP(65001);
-	int flag = -1;
-	helloView();
-	while (flag)
-	{
-		printf("input command:");
-		scanf("%d", &flag);
-		switch (flag)
-		{
-		case 1:
-			searchWeather();
-			break;
-		case 0:
-			break;
-		default:
-			printf("input error\n");
-			break;
-		}
-	}	
-	return 0;
-} */   
+	return weather;
+}
 
 
 void setUp()
