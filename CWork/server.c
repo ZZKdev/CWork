@@ -29,17 +29,18 @@ void serverRun(int servSock)
 	char requestHeader[1024] = { 0 };
 	while (1)
 	{
+		SetConsoleOutputCP(65001);
 		int clientsock = accept(servSock, (SOCKADDR*)&clientAddr, &iSize);
 		recv(clientsock, requestHeader, 1024, 0);
 		log("%s",requestHeader);
-		char path[48] = { 0 };
+		char path[256] = { 0 };
 		getPath(requestHeader, path);
 		View responseView = viewRoute(path);
-
+		printf("%d", strlen(responseView));
 		send(clientsock, responseView, strlen(responseView), 0);
-		
+	
+		/*send(clientsock, "testsetestsetsetsetsetsetse", 20, 0);*/
 		shutdown(clientsock, SD_SEND);
-		printf("\n\n");
 		printf(responseView);
 		free(responseView);
 		closesocket(clientsock);

@@ -29,7 +29,11 @@ void getAdcode(char *address,char *adcode)
 	strcat(url, address);
 
 	char* response = sendRequest(sock, url);
-	char jsonString[2048] = { 0 };
+	char jsonString[4096] = { 0 };
+	
+
+	
+
 	fetchJsonString(response, jsonString);
 
 	fetchAdcode(jsonString, adcode);
@@ -68,7 +72,7 @@ weatherInfo* searchWeather(char *address)
 	*/
 	char adcode[12] = { 0 };
 	getAdcode(address, adcode);
-
+	printf(adcode);
 	char url[256] = { 0 };
 	strcat(url, SEARCH_WEATHER_STRING);
 	strcat(url, adcode);
@@ -76,7 +80,7 @@ weatherInfo* searchWeather(char *address)
 	int sock = linkTarget("106.11.12.1", 80);
 	char* response = sendRequest(sock, url);
 
-	char jsonString[2048] = { 0 };
+	char jsonString[4096] = { 0 };
 	fetchJsonString(response, jsonString);
 	weatherInfo* weather = (weatherInfo *)malloc(sizeof(weatherInfo));
 	fetchWeatherInfo(jsonString, weather);
@@ -127,14 +131,17 @@ char* sendRequest(int sock, char *url)
         Arguments -- 套接字和URL
         Returns -- 响应头
     */
-    char request[512] = {0};
+    char request[1024] = {0};
     makeRequest(url, request);
 
-    char* response = (char*) malloc(2048);
-	memset(response, 0, 2048);
-    send(sock, request, strlen(request), 0);
-    recv(sock, response, 2048, 0);
+    char* response = (char*) malloc(4096);
+	memset(response, 0, 4096);
 
+    send(sock, request, strlen(request), 0);
+	shutdown(sock, SD_SEND);
+	
+
+    int n = recv(sock, response, 4096, MSG_WAITALL);
     return response;
 }
 
@@ -153,7 +160,11 @@ void makeRequest(char* url, char* request)
     }
 
     fread(request, 1, REQUEST_START_NUMBER, requestFile);
+	deBug("%s\n\n", request);
+	deBug("%s\n\n", url);
     strcat(request, url);
+	deBug("%s\n\n", request);
+	
     fread(&request[strlen(request)], 1, REQUEST_END_NUMBER, requestFile);
     fclose(requestFile);
 }
@@ -164,6 +175,7 @@ void fetchJsonString( char *response, char *jsonString)
 		desc -- 在response中抓取json字符串
 		Arguments -- response和返回的json字符串
 	*/
+	printf(response);
     strcpy(jsonString, strstr(response, "\r\n\r\n") + 4);
 }
 void setResponseHeader(char* response)

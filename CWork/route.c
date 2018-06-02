@@ -1,4 +1,4 @@
-#include "route.h"
+ï»¿#include "route.h"
 #include "view.h"
 #include "controllers.h"
 #include <stdlib.h>
@@ -7,8 +7,8 @@
 void getPath(char *requestHeader, char *path)
 {
 	/*
-		desc -- ´ÓÇëÇóÍ·ÖĞ»ñÈ¡ÇëÇóÂ·¾¶
-		Arguments -- ÇëÇóÍ·ºÍ·µ»ØÂ·¾¶
+		desc -- ä»è¯·æ±‚å¤´ä¸­è·å–è¯·æ±‚è·¯å¾„
+		Arguments -- è¯·æ±‚å¤´å’Œè¿”å›è·¯å¾„
 	*/
 
 	char *start = strchr(requestHeader, ' ');
@@ -20,14 +20,15 @@ void getPath(char *requestHeader, char *path)
 char* getArgument(char* path)
 {
 	/*
-		desc -- ´ÓÇëÇóÂ·¾¶ÖĞ»ñÈ¡²ÎÊı
-		Arguments -- ÇëÇóÂ·¾¶
-		returns -- ÇëÇó²ÎÊı
+		desc -- ä»è¯·æ±‚è·¯å¾„ä¸­è·å–å‚æ•°
+		Arguments -- è¯·æ±‚è·¯å¾„
+		returns -- è¯·æ±‚å‚æ•°
 	*/
 	char* start = strchr(path, '=');
 	if (start != NULL)
 	{
 		char *argument = malloc(strlen(start));
+		deBug("len : %d", strlen(start));
 		return strcpy(argument, start + 1);
 	}
 	return NULL;
@@ -36,13 +37,14 @@ char* getArgument(char* path)
 View viewRoute(char *path)
 {
 	/*
-		desc -- ¸ù¾İÂ·¾¶Ñ¡ÔñÂ·ÓÉ
-		Arguments -- ÇëÇóÂ·¾¶
+		desc -- æ ¹æ®è·¯å¾„é€‰æ‹©è·¯ç”±
+		Arguments -- è¯·æ±‚è·¯å¾„
 	*/
 	View view = (View)malloc(2048);
 	memset(view, 0, 2048);
 	setResponseHeader(view);
 	char *argument = getArgument(path);
+	printf("argument\n%s\n\n", argument);
 	if ((stricmp(path, "/")) == 0)
 	{		
 		return indexView(view);
