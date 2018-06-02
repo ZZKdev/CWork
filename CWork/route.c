@@ -3,6 +3,7 @@
 #include "controllers.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 void getPath(char *requestHeader, char *path)
 {
@@ -28,7 +29,6 @@ char* getArgument(char* path)
 	if (start != NULL)
 	{
 		char *argument = malloc(strlen(start));
-		deBug("len : %d", strlen(start));
 		return strcpy(argument, start + 1);
 	}
 	return NULL;
@@ -44,7 +44,8 @@ View viewRoute(char *path)
 	memset(view, 0, 2048);
 	setResponseHeader(view);
 	char *argument = getArgument(path);
-	printf("argument\n%s\n\n", argument);
+
+
 	if ((stricmp(path, "/")) == 0)
 	{		
 		return indexView(view);
@@ -52,6 +53,10 @@ View viewRoute(char *path)
 	else if (strstr(path, "/searchWeather") != NULL)
 	{
 		return weatherView(view, argument);
+	}
+	else if (strncmp(path, "/predictWeather", 15) == 0)
+	{
+		return weather_predictView(view, argument);
 	}
 
 	return strcat(view, "<h1>404</h1>");

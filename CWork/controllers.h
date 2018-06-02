@@ -8,6 +8,7 @@
 #define deBug printf
 #define SEARCH_ADCODE "/v3/place/text?offset=1&page=1&key=c5120cdde367302714edd8b76712fe07&extensions=all&keywords="
 #define SEARCH_WEATHER_STRING "/v3/weather/weatherInfo?key=c5120cdde367302714edd8b76712fe07&city="
+#define PREDICT_WEATHER_STRING "/v3/weather/weatherInfo?key=c5120cdde367302714edd8b76712fe07&extensions=all&city="
 
 
 typedef struct weatherInfo {
@@ -20,6 +21,19 @@ typedef struct weatherInfo {
 	char reporttime[32];
 }weatherInfo;
 
+typedef struct weather_predictInfo {
+	char city[24];
+	char dayweather[3][24];
+	char nightweather[3][24];
+	char daytemp[3][4];
+	char nighttemp[3][4];
+	char daywind[3][24];
+	char nightwind[3][24];
+	char daypower[3][12];
+	char nightpower[3][12];
+	char reporttime[32];
+}weather_predictInfo;
+
 void setUp();
 int linkTarget(char* ip, short port);
 char* sendRequest(int sock, char* url);
@@ -30,4 +44,5 @@ void getAdcode(char *address, char *adcode);
 void fetchWeatherInfo(char *jsonString, weatherInfo* weather);
 weatherInfo* searchWeather(char *address);
 void setResponseHeader(char* response);
+weather_predictInfo* predictWeather(char* address);
 #endif

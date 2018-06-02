@@ -33,15 +33,13 @@ void serverRun(int servSock)
 		int clientsock = accept(servSock, (SOCKADDR*)&clientAddr, &iSize);
 		recv(clientsock, requestHeader, 1024, 0);
 		log("%s",requestHeader);
-		char path[256] = { 0 };
+		char path[1024] = { 0 };
 		getPath(requestHeader, path);
 		View responseView = viewRoute(path);
-		printf("%d", strlen(responseView));
 		send(clientsock, responseView, strlen(responseView), 0);
 	
 		/*send(clientsock, "testsetestsetsetsetsetsetse", 20, 0);*/
 		shutdown(clientsock, SD_SEND);
-		printf(responseView);
 		free(responseView);
 		closesocket(clientsock);
 	}

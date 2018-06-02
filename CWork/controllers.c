@@ -38,7 +38,6 @@ void getAdcode(char *address,char *adcode)
 
 	fetchAdcode(jsonString, adcode);
 
-	printf("%s", adcode);
 	free(response);
 	closesocket(sock);
 }
@@ -63,6 +62,30 @@ void fetchWeatherInfo(char *jsonString, weatherInfo* weather)
 
 }
 
+void fetchWeather_predictInfo(char *jsonString, weather_predictInfo* weather)
+{
+	cJSON* jsonRoot = cJSON_Parse(jsonString);
+	cJSON* jsonForecasts = cJSON_GetObjectItem(jsonRoot, "forecasts");
+	cJSON* jsonForecastItem = cJSON_GetArrayItem(jsonForecasts, 0);
+
+	strcpy(weather->city, cJSON_GetObjectItem(jsonForecastItem, "city")->valuestring);
+	strcpy(weather->reporttime, cJSON_GetObjectItem(jsonForecastItem, "reporttime")->valuestring);
+	cJSON* jsonCasts = cJSON_GetObjectItem(jsonForecastItem, "casts");
+	int i = 1;
+	for (int i = 1; i <= 3; i++)
+	{
+		cJSON* jsonCastsItem = cJSON_GetArrayItem(jsonCasts, i);
+		strcpy(weather->daypower[i - 1], cJSON_GetObjectItem(jsonCastsItem, "daypower")->valuestring);
+		strcpy(weather->daytemp[i - 1], cJSON_GetObjectItem(jsonCastsItem, "daytemp")->valuestring);
+		strcpy(weather->dayweather[i - 1], cJSON_GetObjectItem(jsonCastsItem, "dayweather")->valuestring);
+		strcpy(weather->daywind[i - 1], cJSON_GetObjectItem(jsonCastsItem, "daywind")->valuestring);
+		strcpy(weather->nightpower[i - 1], cJSON_GetObjectItem(jsonCastsItem, "nightpower")->valuestring);
+		strcpy(weather->nighttemp[i - 1], cJSON_GetObjectItem(jsonCastsItem, "nighttemp")->valuestring);
+		strcpy(weather->nightweather[i - 1], cJSON_GetObjectItem(jsonCastsItem, "nightweather")->valuestring);
+		strcpy(weather->nightwind[i - 1], cJSON_GetObjectItem(jsonCastsItem, "nightwind")->valuestring);
+	}
+}
+
 weatherInfo* searchWeather(char *address)
 {	
 	/*
@@ -72,7 +95,7 @@ weatherInfo* searchWeather(char *address)
 	*/
 	char adcode[12] = { 0 };
 	getAdcode(address, adcode);
-	printf(adcode);
+
 	char url[256] = { 0 };
 	strcat(url, SEARCH_WEATHER_STRING);
 	strcat(url, adcode);
@@ -85,6 +108,7 @@ weatherInfo* searchWeather(char *address)
 	weatherInfo* weather = (weatherInfo *)malloc(sizeof(weatherInfo));
 	fetchWeatherInfo(jsonString, weather);
 
+	free(response);
 	return weather;
 }
 
@@ -160,12 +184,9 @@ void makeRequest(char* url, char* request)
     }
 
     fread(request, 1, REQUEST_START_NUMBER, requestFile);
-	deBug("%s\n\n", request);
-	deBug("%s\n\n", url);
     strcat(request, url);
-	deBug("%s\n\n", request);
-	
     fread(&request[strlen(request)], 1, REQUEST_END_NUMBER, requestFile);
+
     fclose(requestFile);
 }
 
@@ -175,7 +196,6 @@ void fetchJsonString( char *response, char *jsonString)
 		desc -- 在response中抓取json字符串
 		Arguments -- response和返回的json字符串
 	*/
-	printf(response);
     strcpy(jsonString, strstr(response, "\r\n\r\n") + 4);
 }
 void setResponseHeader(char* response)
@@ -186,4 +206,30 @@ void setResponseHeader(char* response)
 	*/
 	char* Header = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n";
 	strcat(response, Header);
+}
+
+weather_predictInfo* predictWeather(char* address)
+{
+	weather_predictInfo* weather = (weather_predictInfo*)malloc(sizeof(weather_predictInfo));
+	memset(weather, 0, sizeof(weather));
+
+	char adcode[12] = { 0 };
+	getAdcode(address, adcode);
+	
+
+
+	char url[256] = { 0 };
+	strcat(url, PREDICT_WEATHER_STRING);
+	strcat(url, adcode);
+
+	int sock = linkTarget("106.11.12.1", 80);
+	char* response = sendRequest(sock, url);
+
+	char jsonString[4096] = { 0 };
+	fetchJsonString(response, jsonString);
+
+
+	fetchWeather_predictInfo(jsonString, weather);
+
+	return weather;
 }
