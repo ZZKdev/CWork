@@ -12,8 +12,8 @@ View indexView(View view)
 		fprintf(stderr, "open index.html error!\n");
 		return strcat(view, "<h1>couln't open index.html file</h1>");
 	}
-	char bufferFile[2048] = { 0 };
-	fread(bufferFile, 1, 645, indexHtml);
+	char bufferFile[4096] = { 0 };
+	fread(bufferFile, 1, 2054, indexHtml);
 	strcat(view, bufferFile);
 	fclose(indexHtml);
 
@@ -82,4 +82,22 @@ View weather_predictView(View view, char *address)
 
 	free(weather);
 	return view;
+}
+
+View saveView(View view, char* request)
+{
+	char* post = malloc(4096);
+	memset(post, 0, sizeof(post));
+	fetchContent(request, post);
+	strcat(post, SEPARATOR);
+
+	printf(post);
+	
+	FILE* filePost = fopen("filePost", "ab+");
+	decode(post);
+	fwrite(post, 1, strlen(post), filePost);
+	fclose(filePost);
+	
+	return strcat(view, post);
+
 }

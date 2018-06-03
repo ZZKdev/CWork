@@ -34,15 +34,18 @@ typedef struct weather_predictInfo {
 	char reporttime[32];
 }weather_predictInfo;
 
+
+
 void setUp();
 int linkTarget(char* ip, short port);
 char* sendRequest(int sock, char* url);
 void makeRequest(char* url, char* request);
-void fetchJsonString( char *response, char *jsonString);
+void fetchContent(char *response_or_request, char *content);
 void fetchAdcode(char *jsonString, char *adcode);
 void getAdcode(char *address, char *adcode);
 void fetchWeatherInfo(char *jsonString, weatherInfo* weather);
 weatherInfo* searchWeather(char *address);
 void setResponseHeader(char* response);
 weather_predictInfo* predictWeather(char* address);
+void decode(char* string);
 #endif

@@ -34,18 +34,22 @@ char* getArgument(char* path)
 	return NULL;
 }
 
-View viewRoute(char *path)
+View viewRoute(char *request)
 {
 	/*
-		desc -- 根据路径选择路由
-		Arguments -- 请求路径
+		desc -- 根据请求路由
+		Arguments -- 请求
 	*/
-	View view = (View)malloc(2048);
-	memset(view, 0, 2048);
+	char path[1024] = { 0 };
+	getPath(request, path);
+
+	View view = (View)malloc(8192);
+	memset(view, 0, 8192);
 	setResponseHeader(view);
+
 	char *argument = getArgument(path);
 
-
+	printf(path);
 	if ((stricmp(path, "/")) == 0)
 	{		
 		return indexView(view);
@@ -57,6 +61,10 @@ View viewRoute(char *path)
 	else if (strncmp(path, "/predictWeather", 15) == 0)
 	{
 		return weather_predictView(view, argument);
+	}
+	else if (strncmp(path, "/newpost", 8) == 0)
+	{
+		return saveView(view, request);
 	}
 
 	return strcat(view, "<h1>404</h1>");

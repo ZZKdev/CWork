@@ -34,7 +34,7 @@ void getAdcode(char *address,char *adcode)
 
 	
 
-	fetchJsonString(response, jsonString);
+	fetchContent(response, jsonString);
 
 	fetchAdcode(jsonString, adcode);
 
@@ -100,11 +100,13 @@ weatherInfo* searchWeather(char *address)
 	strcat(url, SEARCH_WEATHER_STRING);
 	strcat(url, adcode);
 
+	printf(adcode);
+
 	int sock = linkTarget("106.11.12.1", 80);
 	char* response = sendRequest(sock, url);
 
 	char jsonString[4096] = { 0 };
-	fetchJsonString(response, jsonString);
+	fetchContent(response, jsonString);
 	weatherInfo* weather = (weatherInfo *)malloc(sizeof(weatherInfo));
 	fetchWeatherInfo(jsonString, weather);
 
@@ -190,13 +192,13 @@ void makeRequest(char* url, char* request)
     fclose(requestFile);
 }
 
-void fetchJsonString( char *response, char *jsonString)
+void fetchContent(char *response_or_request, char *content)
 {
 	/*
 		desc -- 在response中抓取json字符串
 		Arguments -- response和返回的json字符串
 	*/
-    strcpy(jsonString, strstr(response, "\r\n\r\n") + 4);
+    strcpy(content, strstr(response_or_request, "\r\n\r\n") + 4);
 }
 void setResponseHeader(char* response)
 {
@@ -226,10 +228,56 @@ weather_predictInfo* predictWeather(char* address)
 	char* response = sendRequest(sock, url);
 
 	char jsonString[4096] = { 0 };
-	fetchJsonString(response, jsonString);
+	fetchContent(response, jsonString);
 
 
 	fetchWeather_predictInfo(jsonString, weather);
 
 	return weather;
+}
+
+int hex2dec(char c)
+{
+	if ('0' <= c && c <= '9')
+	{
+		return c - '0';
+	}
+	else if ('a' <= c && c <= 'f')
+	{
+		return c - 'a' + 10;
+	}
+	else if ('A' <= c && c <= 'F')
+	{
+		return c - 'A' + 10;
+	}
+	else
+	{
+		return -1;
+	}
+}
+void decode(char* destination)
+{
+	int i = 0;
+	int len = strlen(destination);
+	int res_len = 0;
+	char num, c0, c1;
+	char* result = malloc(len + 1);
+	for (i = 0; i < len; ++i)
+	{
+		char c = destination[i];
+		if (c != '%')
+		{
+			result[res_len++] = c;
+		}
+		else
+		{
+			c1 = destination[++i];
+			c0 = destination[++i];
+			num = hex2dec(c1) * 16 + hex2dec(c0);
+			result[res_len++] = num;
+		}
+	}
+	result[res_len] = '\0';
+	strcpy(destination, result);
+	free(result);
 }

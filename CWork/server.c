@@ -26,16 +26,13 @@ void serverRun(int servSock)
 {
 	SOCKADDR clientAddr;
 	int iSize = sizeof(SOCKADDR);
-	char requestHeader[1024] = { 0 };
+	char request[4096] = { 0 };
 	while (1)
 	{
-		SetConsoleOutputCP(65001);
 		int clientsock = accept(servSock, (SOCKADDR*)&clientAddr, &iSize);
-		recv(clientsock, requestHeader, 1024, 0);
-		log("%s",requestHeader);
-		char path[1024] = { 0 };
-		getPath(requestHeader, path);
-		View responseView = viewRoute(path);
+		recv(clientsock, request, 4096, 0);
+		log("%s",request);
+		View responseView = viewRoute(request);
 		send(clientsock, responseView, strlen(responseView), 0);
 	
 		/*send(clientsock, "testsetestsetsetsetsetsetse", 20, 0);*/

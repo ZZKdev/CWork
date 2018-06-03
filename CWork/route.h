@@ -4,5 +4,5 @@
 
 
 void getPath(char *requestHeader, char *path);
-View viewRoute(char *path);
+View viewRoute(char *request);
 char* getArgument(char* path);
