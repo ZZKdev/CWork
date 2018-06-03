@@ -34,6 +34,12 @@ typedef struct weather_predictInfo {
 	char reporttime[32];
 }weather_predictInfo;
 
+typedef struct lineList {
+	char title[64];
+	char content[1024];
+	struct lineList* next;
+}linedList;
+
 
 
 void setUp();
@@ -48,4 +54,5 @@ weatherInfo* searchWeather(char *address);
 void setResponseHeader(char* response);
 weather_predictInfo* predictWeather(char* address);
 void decode(char* string);
+linedList* create_linedList();
 #endif

@@ -281,3 +281,32 @@ void decode(char* destination)
 	strcpy(destination, result);
 	free(result);
 }
+
+linedList* create_linedList()
+{
+	FILE* database = fopen("database", "rb");
+	char buffer[2048] = { 0 };
+	char title[64] = { 0 };
+	char content[1024] = { 0 };
+	
+	linedList* phead = NULL;
+	linedList* pnode = NULL;
+
+	while (fgets(buffer, 2048, database) != NULL)
+	{
+		if (phead == NULL)
+		{
+			phead = malloc(sizeof(linedList));
+			pnode = phead;
+		}
+		else
+		{
+			pnode->next = malloc(sizeof(linedList));
+			pnode = pnode->next;
+		}
+		pnode->next = NULL;
+		sscanf(buffer, "%*[^=]=%[^&]", pnode->title);
+		sscanf(buffer, "%*[^&]&%*[^=]=%[^&]", pnode->content);
+	}
+	return phead;
+}

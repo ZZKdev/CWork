@@ -103,18 +103,17 @@ View saveView(View view, char* request)
 
 View showView(View view)
 {
-	FILE* database = fopen("database", "rb");
-	char linedata[4096] = { 0 };
-	fgets(linedata, sizeof(linedata), database);
-	char title[200] = { 0 };
-	char content[200] = { 0 };
-	sscanf(linedata, "%*[^=]=%[^&]", title);
-	sscanf(linedata, "%*[^&]&content=%[^&]", content);
+	linedList* pnode = create_linedList();
+	for (; pnode; pnode = pnode->next)
+	{
+		strcat(view, u8"标题：");
+		strcat(view, pnode->title);
+		strcat(view, "</br>");
+		strcat(view, u8"内容：");
+		strcat(view, pnode->content);
+		strcat(view, "</br>");
 
-	strcat(view, title);
-	strcat(view, "</br>");
-	strcat(view, content);
-	strcat(view, "</br>");
+	}
 	
-	return strcat(view, linedata);
+	return view;
 }
