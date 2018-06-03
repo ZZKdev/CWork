@@ -12,10 +12,7 @@ void getPath(char *requestHeader, char *path)
 		Arguments -- 请求头和返回路径
 	*/
 
-	char *start = strchr(requestHeader, ' ');
-	char *end = strchr(requestHeader + (start - requestHeader + 1), ' ');
-
-	strncpy(path, start + 1, end - start - 1);
+	sscanf(requestHeader, "%*[^ ] %[^ ]", path);
 }
 
 char* getArgument(char* path)
@@ -66,6 +63,9 @@ View viewRoute(char *request)
 	{
 		return saveView(view, request);
 	}
-
+	else if (strncmp(path, "/showpost", 9) == 0)
+	{
+		return showView(view);
+	}
 	return strcat(view, "<h1>404</h1>");
 }

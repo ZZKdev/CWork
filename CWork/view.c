@@ -86,18 +86,35 @@ View weather_predictView(View view, char *address)
 
 View saveView(View view, char* request)
 {
-	char* post = malloc(4096);
-	memset(post, 0, sizeof(post));
+	char* post[4096] = { 0 };
 	fetchContent(request, post);
-	strcat(post, SEPARATOR);
-
-	printf(post);
-	
-	FILE* filePost = fopen("filePost", "ab+");
 	decode(post);
-	fwrite(post, 1, strlen(post), filePost);
-	fclose(filePost);
+	strcat(post, SEPARATOR);
 	
+	
+	FILE* database = fopen("database", "ab+");
+
+	fwrite(post, 1, strlen(post), database);
+	
+	fclose(database);
 	return strcat(view, post);
 
+}
+
+View showView(View view)
+{
+	FILE* database = fopen("database", "rb");
+	char linedata[4096] = { 0 };
+	fgets(linedata, sizeof(linedata), database);
+	char title[200] = { 0 };
+	char content[200] = { 0 };
+	sscanf(linedata, "%*[^=]=%[^&]", title);
+	sscanf(linedata, "%*[^&]&content=%[^&]", content);
+
+	strcat(view, title);
+	strcat(view, "</br>");
+	strcat(view, content);
+	strcat(view, "</br>");
+	
+	return strcat(view, linedata);
 }
