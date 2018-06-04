@@ -51,19 +51,20 @@ View weather_predictView(View view, char *address)
 	weather_predictInfo* weather = predictWeather(address);
 	free(address);
 	
-	strcat(view, u8"城市：");
-	strcat(view, weather->city);
-	strcat(view, "</br>");
-	strcat(view, u8"报道时间：");
-	strcat(view, "</br>");
-	strcat(view, weather->reporttime);
+	sprintf(view + strlen(view), u8"地点：%s</br>", weather->city);
+	sprintf(view + strlen(view), u8"报道时间：%s</br>", weather->reporttime);
 	int i;
 	for (i = 0; i <= 2; i++)
 	{
-		strcat(view, u8"未来天气</br>");
-		strcat(view, u8"早上气温");
-		strcat(view, weather->daytemp[i]);
-		strcat(view, "</br>");
+		sprintf(view + strlen(view), u8"未来第%d天气情况</br>", i + 1);
+		sprintf(view + strlen(view), u8"早上天气：%s</br>", weather->dayweather[i]);
+		sprintf(view + strlen(view), u8"早上气温：%s</br>", weather->daytemp[i]);
+		sprintf(view + strlen(view), u8"早上风向：%s</br>", weather->daywind[i]);
+		sprintf(view + strlen(view), u8"早上风力等级：%s</br>", weather->daypower[i]);
+		sprintf(view + strlen(view), u8"晚上天气：%s</br>", weather->nightweather[i]);
+		sprintf(view + strlen(view), u8"晚上气温：%s</br>", weather->nighttemp[i]);
+		sprintf(view + strlen(view), u8"晚上风向：%s</br>", weather->nightwind[i]);
+		sprintf(view + strlen(view), u8"晚上风力等级：%s</br></br>", weather->nightpower[i]);
 		
 	}
 
