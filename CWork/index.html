@@ -6,22 +6,25 @@
     <style type="text/css">
         body {
             background: rgb(26, 49, 95);
-            color:aliceblue;
+            color: aliceblue;
             background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(26, 49, 95, 1)), color-stop(10%, rgba(26, 49, 95, 1)), color-stop(24%, rgba(29, 108, 141, 1)), color-stop(37%, rgba(41, 136, 151, 1)), color-stop(77%, rgba(39, 45, 100, 1)), color-stop(90%, rgba(26, 49, 95, 1)), color-stop(100%, rgba(26, 49, 95, 1)));
         }
+
         .center {
             margin: 0 auto;
             width: 800px;
             text-align: left;
-            border:3px solid #080808;
+            border: 3px solid #080808;
             box-shadow: 5px 4px 5px #000;
             background-color: #222;
         }
-        p{
-            font-weight:bolder;
+
+        p {
+            font-weight: bolder;
         }
-        a{
-            color:aliceblue;
+
+        a {
+            color: aliceblue;
         }
     </style>
 </head>
@@ -31,22 +34,23 @@
         <p>欢迎使用本系统</p>
         <p>您可以使用以下功能</p>
         <h2>一、查询当天天气</h2>
-        <form action="/searchWeather" method="GET">
+        <form action="/searchWeather" target="result" method="GET">
             输入地点：<input type="text" name="address" />
             <input type="submit" value="查询" />
         </form>
         <h2>二、查询未来三天天气</h2>
-        <form action="/predictWeather" method="GET">
+        <form action="/predictWeather" target="result" method="GET">
             输入地点：<input type="text" name="address" />
             <input type="submit" value="查询" />
         </form>
         <h2>三、记录出行记录</h2>
-            <form action="/newpost" method="POST">
+            <form action="/newpost" target="result" method="POST">
                 标题：<input type="text" name="title" /><br />
                 内容：<textarea cols="91" rows="5" name="content">在这里面输入内容</textarea><br />
                 <input type="submit" value="保存" style="float:right" />
             </form>
-        <h2><a href="/showpost">四、查看出行记录</a></h2>
+        <h2><a href="/showpost" target="result">四、查看出行记录</a></h2>
+        <iframe id="myiframe" name="result" width="795px" srcdoc="<h2>结果显示</h2>" frameborder="0" height="600px"></iframe>
     </div>   
 </body>
 </html>

@@ -13,7 +13,7 @@ View indexView(View view)
 		return strcat(view, "<h1>couln't open index.html file</h1>");
 	}
 	char bufferFile[4096] = { 0 };
-	fread(bufferFile, 1, 2054, indexHtml);
+	fread(bufferFile, 1, 2261, indexHtml);
 	strcat(view, bufferFile);
 	fclose(indexHtml);
 
@@ -104,6 +104,7 @@ View saveView(View view, char* request)
 View showView(View view)
 {
 	linedList* pnode = create_linedList();
+	strcat(view, "<!DOCTYPE html>");
 	for (; pnode; pnode = pnode->next)
 	{
 		strcat(view, u8"标题：");
