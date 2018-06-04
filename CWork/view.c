@@ -110,10 +110,10 @@ View showView(View view)
 	}
 	while(pnode)
 	{
-		strcat(view, u8"标题：");
+		strcat(view, u8"地点：");
 		strcat(view, pnode->title);
 		strcat(view, "</br>");
-		strcat(view, u8"内容：");
+		strcat(view, u8"记录：");
 		strcat(view, pnode->content);
 		strcat(view, "</br>");
 		pnode = pnode->next;

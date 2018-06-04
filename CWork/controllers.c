@@ -326,3 +326,23 @@ void free_linedList(linedList* pnode)
 		pnode = ptemp;
 	}
 }
+
+linedList* delete_node(linedList* phead, char *address)
+{
+	linedList* pnode = phead;
+	while (pnode)
+	{
+		if (pnode == phead && strcmp(phead->title, address) == 0)
+		{
+			phead = phead->next;
+			free(pnode);
+		}
+		else if(pnode->next != NULL && strcmp(pnode->next->title, address) == 0)
+		{
+			pnode->next = pnode->next->next;
+			free(pnode->next);
+		}
+		pnode = pnode->next;
+	}
+	return phead;
+}
