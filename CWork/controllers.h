@@ -55,4 +55,5 @@ void setResponseHeader(char* response);
 weather_predictInfo* predictWeather(char* address);
 void decode(char* string);
 linedList* create_linedList();
+void free_linedList(linedList* pnode);
 #endif

@@ -97,15 +97,18 @@ View saveView(View view, char* request)
 	fwrite(post, 1, strlen(post), database);
 	
 	fclose(database);
-	return strcat(view, post);
 
+	return strcat(view, u8"<h2>保存成功</h2>");
 }
 
 View showView(View view)
 {
 	linedList* pnode = create_linedList();
-	strcat(view, "<!DOCTYPE html>");
-	for (; pnode; pnode = pnode->next)
+	if (pnode == NULL)
+	{
+		return strcat(view, u8"<h2>暂无信息</h2>");
+	}
+	while(pnode)
 	{
 		strcat(view, u8"标题：");
 		strcat(view, pnode->title);
@@ -113,8 +116,8 @@ View showView(View view)
 		strcat(view, u8"内容：");
 		strcat(view, pnode->content);
 		strcat(view, "</br>");
-
+		pnode = pnode->next;
 	}
-	
+	free_linedList(pnode);
 	return view;
 }

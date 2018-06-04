@@ -285,6 +285,10 @@ void decode(char* destination)
 linedList* create_linedList()
 {
 	FILE* database = fopen("database", "rb");
+	if (database == NULL)
+	{
+		return NULL;
+	}
 	char buffer[2048] = { 0 };
 	char title[64] = { 0 };
 	char content[1024] = { 0 };
@@ -308,5 +312,17 @@ linedList* create_linedList()
 		sscanf(buffer, "%*[^=]=%[^&]", pnode->title);
 		sscanf(buffer, "%*[^&]&%*[^=]=%[^&]", pnode->content);
 	}
+	fclose(database);
 	return phead;
+}
+
+void free_linedList(linedList* pnode)
+{
+	linedList* ptemp;
+	while (pnode)
+	{
+		ptemp = pnode->next;
+		free(pnode);
+		pnode = ptemp;
+	}
 }
