@@ -55,10 +55,9 @@ void fetchWeatherInfo(char *jsonString, weatherInfo* weather)
 	strcpy(weather->reporttime, cJSON_GetObjectItem(jsonLiveItem, "reporttime")->valuestring);
 	strcpy(weather->weather, cJSON_GetObjectItem(jsonLiveItem, "weather")->valuestring);
 	strcpy(weather->winddirection, cJSON_GetObjectItem(jsonLiveItem, "winddirection")->valuestring);
-
-	weather->humidity = atoi(cJSON_GetObjectItem(jsonLiveItem, "humidity")->valuestring);
-	weather->temperature = atoi(cJSON_GetObjectItem(jsonLiveItem, "temperature")->valuestring);
-	weather->windpower = atoi(cJSON_GetObjectItem(jsonLiveItem, "windpower")->valuestring);
+	strcpy(weather->humidity, cJSON_GetObjectItem(jsonLiveItem, "humidity")->valuestring);
+	strcpy(weather->temperature, cJSON_GetObjectItem(jsonLiveItem, "temperature")->valuestring);
+	strcpy(weather->windpower, cJSON_GetObjectItem(jsonLiveItem, "windpower")->valuestring);
 
 }
 
@@ -309,7 +308,7 @@ linedList* create_linedList()
 			pnode = pnode->next;
 		}
 		pnode->next = NULL;
-		sscanf(buffer, "%*[^=]=%[^&]", pnode->title);
+		sscanf(buffer, "%*[^=]=%[^&]", pnode->address);
 		sscanf(buffer, "%*[^&]&%*[^=]=%[^&]", pnode->content);
 	}
 	fclose(database);
@@ -330,14 +329,15 @@ void free_linedList(linedList* pnode)
 linedList* delete_node(linedList* phead, char *address)
 {
 	linedList* pnode = phead;
+	printf("\nlen:%d", strlen(address));
 	while (pnode)
 	{
-		if (pnode == phead && strcmp(phead->title, address) == 0)
+		if (pnode == phead && strcmp(phead->address, address) == 0)
 		{
 			phead = phead->next;
 			free(pnode);
 		}
-		else if(pnode->next != NULL && strcmp(pnode->next->title, address) == 0)
+		else if(pnode->next != NULL && strcmp(pnode->next->address, address) == 0)
 		{
 			pnode->next = pnode->next->next;
 			free(pnode->next);
@@ -345,4 +345,16 @@ linedList* delete_node(linedList* phead, char *address)
 		pnode = pnode->next;
 	}
 	return phead;
+}
+
+void save_linedList(linedList* pnode)
+{
+	FILE* database = fopen("database", "wb");
+	while (pnode)
+	{
+		fprintf(database, "address=%s", pnode->address);
+		fprintf(database, "&content=%s\r\n", pnode->content);
+		pnode = pnode->next;
+	}
+	fclose(database);
 }

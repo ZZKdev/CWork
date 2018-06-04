@@ -44,12 +44,17 @@
             <input type="submit" value="查询" />
         </form>
         <h2>三、记录出行记录</h2>
-            <form action="/newpost" target="result" method="POST">
-                地点：<input type="text" name="title" /><br />
-                记录：<textarea cols="91" rows="5" name="content">在这里面输入内容</textarea><br />
-                <input type="submit" value="保存" style="float:right" />
-            </form>
-        <h2><a href="/showpost" target="result">四、查看出行记录</a></h2>
+        <form action="/newpost" target="result" method="POST">
+            地点：<input type="text" name="address" /><br />
+            记录：<textarea cols="91" rows="5" name="content">在这里面输入记录</textarea><br />
+            <input type="submit" value="保存" style="float:right" />
+        </form>
+        <h2>四、删除指定地点的出行记录</h2>
+        <form action="/deletepost" target="result" method="POST">
+            地点：<input type="text" name="address" /><br />
+            <input type="submit" value="删除" style="float:right" />
+        </form>
+        <h2><a href="/showpost" target="result">五、查看出行记录</a></h2>
         <iframe id="myiframe" name="result" width="795px" srcdoc="<h2>结果显示</h2>" frameborder="0" height="600px"></iframe>
     </div>   
 </body>

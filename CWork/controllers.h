@@ -14,10 +14,10 @@
 typedef struct weatherInfo {
 	char city[24];
 	char weather[24];
-	int temperature;
+	char temperature[4];
 	char winddirection[24];
-	int windpower;
-	int humidity;
+	char windpower[4];
+	char humidity[4];
 	char reporttime[32];
 }weatherInfo;
 
@@ -35,7 +35,7 @@ typedef struct weather_predictInfo {
 }weather_predictInfo;
 
 typedef struct lineList {
-	char title[64];
+	char address[64];
 	char content[1024];
 	struct lineList* next;
 }linedList;
@@ -56,4 +56,6 @@ weather_predictInfo* predictWeather(char* address);
 void decode(char* string);
 linedList* create_linedList();
 void free_linedList(linedList* pnode);
+linedList* delete_node(linedList* phead, char *address);
+void save_linedList(linedList* pnode);
 #endif

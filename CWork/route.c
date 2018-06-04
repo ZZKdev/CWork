@@ -67,5 +67,9 @@ View viewRoute(char *request)
 	{
 		return showView(view);
 	}
+	else if (strncmp(path, "/deletepost", 11) == 0)
+	{
+		return deleteView(view, request);
+	}
 	return strcat(view, "<h1>404</h1>");
 }

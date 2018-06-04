@@ -13,7 +13,7 @@ View indexView(View view)
 		return strcat(view, "<h1>couln't open index.html file</h1>");
 	}
 	char bufferFile[4096] = { 0 };
-	fread(bufferFile, 1, 2261, indexHtml);
+	fread(bufferFile, 1, 2522, indexHtml);
 	strcat(view, bufferFile);
 	fclose(indexHtml);
 
@@ -30,27 +30,14 @@ View weatherView(View view, char* address)
 	char buffer[24] = { 0 };
 	free(address);
 
-	strcat(view, u8"城市：");
-	strcat(view, weather->city);
-	strcat(view, "</br>");
-	strcat(view, u8"天气：");
-	strcat(view, weather->weather);
-	strcat(view, "</br>");
-	strcat(view, u8"风向：");
-	strcat(view, weather->winddirection);
-	strcat(view, "</br>");
-	strcat(view, u8"风力等级：");
-	strcat(view, itoa(weather->windpower, buffer, 10));
-	strcat(view, "</br>");
-	strcat(view, u8"空气湿度：");
-	strcat(view, itoa(weather->humidity, buffer, 10));
-	strcat(view, "</br>");
-	strcat(view, u8"温度：");
-	strcat(view, itoa(weather->temperature, buffer, 10));
-	strcat(view, "</br>");
-	strcat(view, u8"报道时间：");
-	strcat(view, weather->reporttime);
-
+	sprintf(view + strlen(view), u8"地点：%s</br>", weather->city);
+	sprintf(view + strlen(view), u8"天气：%s</br>", weather->weather);
+	sprintf(view + strlen(view), u8"风向：%s</br>", weather->winddirection);
+	sprintf(view + strlen(view), u8"风力等级：%s</br>", weather->windpower);
+	sprintf(view + strlen(view), u8"空气湿度：%s</br>", weather->humidity);
+	sprintf(view + strlen(view), u8"温度：%s</br>", weather->temperature);
+	sprintf(view + strlen(view), u8"报道时间：%s</br>", weather->reporttime);
+	
 	free(weather);
 	return view;
 }
@@ -111,7 +98,7 @@ View showView(View view)
 	while(pnode)
 	{
 		strcat(view, u8"地点：");
-		strcat(view, pnode->title);
+		strcat(view, pnode->address);
 		strcat(view, "</br>");
 		strcat(view, u8"记录：");
 		strcat(view, pnode->content);
@@ -120,4 +107,20 @@ View showView(View view)
 	}
 	free_linedList(pnode);
 	return view;
+}
+
+View deleteView(View view, char* request)
+{
+	char* content[128] = { 0 };
+	fetchContent(request, content);
+	printf("\n\ncontent:\n%s", content);
+	decode(content);
+	char* address[128] = { 0 };
+	sscanf(content, "%*[^=]=%[^&]", address);
+	linedList* phead = create_linedList();
+
+	phead = delete_node(phead, address);
+	save_linedList(phead);
+
+	return strcat(view, u8"<h1>删除成功</h1>");
 }
