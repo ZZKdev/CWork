@@ -2,10 +2,11 @@
 
 #define View char*
 #define SEPARATOR "\r\n"
+#define Request char*
 
-View indexView(View view);
-View weatherView(View view, char* address);
-View weather_predictView(View, char* address);
-View saveView(View view, char* request);
-View showView(View view);
-View deleteView(View view, char* request);
+View indexView(View view, Request request);
+View weatherView(View view, Request request);
+View weather_predictView(View, Request request);
+View saveView(View view, Request request);
+View showView(View view, Request requst);
+View deleteView(View view, Request request);

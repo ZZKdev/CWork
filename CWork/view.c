@@ -2,8 +2,9 @@
 #include <string.h>
 #include "view.h"
 #include "controllers.h"
+#include "route.h"
 
-View indexView(View view)
+View indexView(View view, Request request)
 {
 	FILE* indexHtml = NULL;
 	
@@ -20,14 +21,18 @@ View indexView(View view)
 	return view;
 }
 
-View weatherView(View view, char* address)
+
+View weatherView(View view, Request request)
 {
+	char path[256] = { 0 };
+	getPath(request, path);
+	char* address = getArgument(path);
 	if (address == NULL)
 	{
 		return strcat(view, "no address");
 	}
+
 	weatherInfo* weather = searchWeather(address);
-	char buffer[24] = { 0 };
 	free(address);
 
 	sprintf(view + strlen(view), u8"地点：%s</br>", weather->city);
@@ -37,23 +42,28 @@ View weatherView(View view, char* address)
 	sprintf(view + strlen(view), u8"空气湿度：%s</br>", weather->humidity);
 	sprintf(view + strlen(view), u8"温度：%s</br>", weather->temperature);
 	sprintf(view + strlen(view), u8"报道时间：%s</br>", weather->reporttime);
-	
+
 	free(weather);
 	return view;
 }
 
-View weather_predictView(View view, char *address)
+
+View weather_predictView(View view, Request request)
 {
+	int i;
+	char path[256] = { 0 };
+	getPath(request, path);
+	char* address = getArgument(path);
 	if (address == NULL)
 	{
 		return strcat(view, "no address");
 	}
 	weather_predictInfo* weather = predictWeather(address);
 	free(address);
-	
+
 	sprintf(view + strlen(view), u8"地点：%s</br>", weather->city);
 	sprintf(view + strlen(view), u8"报道时间：%s</br>", weather->reporttime);
-	int i;
+
 	for (i = 0; i <= 2; i++)
 	{
 		sprintf(view + strlen(view), u8"未来第%d天气情况</br>", i + 1);
@@ -65,14 +75,13 @@ View weather_predictView(View view, char *address)
 		sprintf(view + strlen(view), u8"晚上气温：%s</br>", weather->nighttemp[i]);
 		sprintf(view + strlen(view), u8"晚上风向：%s</br>", weather->nightwind[i]);
 		sprintf(view + strlen(view), u8"晚上风力等级：%s</br></br>", weather->nightpower[i]);
-		
-	}
 
+	}
 	free(weather);
 	return view;
 }
 
-View saveView(View view, char* request)
+View saveView(View view, Request request)
 {
 	char* post[4096] = { 0 };
 	fetchContent(request, post);
@@ -89,7 +98,7 @@ View saveView(View view, char* request)
 	return strcat(view, u8"<h2>保存成功</h2>");
 }
 
-View showView(View view)
+View showView(View view, Request request)
 {
 	linedList* pnode = create_linedList();
 	if (pnode == NULL)
@@ -110,7 +119,7 @@ View showView(View view)
 	return view;
 }
 
-View deleteView(View view, char* request)
+View deleteView(View view, Request request)
 {
 	char* content[128] = { 0 };
 	fetchContent(request, content);

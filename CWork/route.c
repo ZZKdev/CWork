@@ -44,32 +44,22 @@ View viewRoute(char *request)
 	memset(view, 0, 8192);
 	setResponseHeader(view);
 
-	char *argument = getArgument(path);
-
-	printf(path);
-	if ((stricmp(path, "/")) == 0)
-	{		
-		return indexView(view);
-	}
-	else if (strstr(path, "/searchWeather") != NULL)
+	int i;
+	urlPattern urlpatterns[] = {
+		{"/searchWeather", weatherView},
+		{"/predictWeather", weather_predictView},
+		{"/newpost", saveView},
+		{"/showpost", showView},
+		{"/deletepost", deleteView},
+		{ "/", indexView }
+	};
+	for (i = 0; i < sizeof(urlpatterns) / sizeof(urlPattern); i++)
 	{
-		return weatherView(view, argument);
-	}
-	else if (strncmp(path, "/predictWeather", 15) == 0)
-	{
-		return weather_predictView(view, argument);
-	}
-	else if (strncmp(path, "/newpost", 8) == 0)
-	{
-		return saveView(view, request);
-	}
-	else if (strncmp(path, "/showpost", 9) == 0)
-	{
-		return showView(view);
-	}
-	else if (strncmp(path, "/deletepost", 11) == 0)
-	{
-		return deleteView(view, request);
+		if (strncmp(urlpatterns[i].url, path, strlen(urlpatterns[i].url) == 1 ? 2 : strlen(urlpatterns[i].url)) == 0)
+		{
+			return urlpatterns[i].view(view, request);
+		}
 	}
 	return strcat(view, "<h1>404</h1>");
+
 }
