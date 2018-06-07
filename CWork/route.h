@@ -3,11 +3,9 @@
 #define View char*
 #define Request char*
 
-typedef struct urlPattern {
+typedef struct UrlPattern {
 	char* url;
 	View (*view)(View view, Request request);
-}urlPattern;
+}UrlPattern;
 
-void getPath(char *requestHeader, char *path);
-View viewRoute(char *request);
-char* getArgument(char* path);
+View viewRoute(Request request);

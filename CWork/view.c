@@ -1,8 +1,8 @@
-﻿#include <stdio.h>
-#include <string.h>
-#include "view.h"
+﻿#include "view.h"
 #include "controllers.h"
-#include "route.h"
+
+#include <stdio.h>
+#include <string.h>
 
 View indexView(View view, Request request)
 {

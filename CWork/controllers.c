@@ -32,8 +32,6 @@ void getAdcode(char *address,char *adcode)
 	char jsonString[4096] = { 0 };
 	
 
-	
-
 	fetchContent(response, jsonString);
 
 	fetchAdcode(jsonString, adcode);
@@ -63,6 +61,10 @@ void fetchWeatherInfo(char *jsonString, weatherInfo* weather)
 
 void fetchWeather_predictInfo(char *jsonString, weather_predictInfo* weather)
 {
+	/*
+		desc -- 从json字符串中提取预测的天气信息
+		Arguments -- json字符串和返回的结构体
+	*/
 	cJSON* jsonRoot = cJSON_Parse(jsonString);
 	cJSON* jsonForecasts = cJSON_GetObjectItem(jsonRoot, "forecasts");
 	cJSON* jsonForecastItem = cJSON_GetArrayItem(jsonForecasts, 0);
@@ -194,8 +196,8 @@ void makeRequest(char* url, char* request)
 void fetchContent(char *response_or_request, char *content)
 {
 	/*
-		desc -- 在response中抓取json字符串
-		Arguments -- response和返回的json字符串
+		desc -- 从整个响应或请求中获取其中的响应内容或请求内容
+		Arguments -- 响应或请求、返回的内容
 	*/
     strcpy(content, strstr(response_or_request, "\r\n\r\n") + 4);
 }
@@ -211,6 +213,11 @@ void setResponseHeader(char* response)
 
 weather_predictInfo* predictWeather(char* address)
 {
+	/*
+		desc -- 查询地址的未来三天的天气信息
+		Arguments -- 请求地址
+		returns -- 地址信息结构体
+	*/
 	weather_predictInfo* weather = (weather_predictInfo*)malloc(sizeof(weather_predictInfo));
 	memset(weather, 0, sizeof(weather));
 
@@ -357,4 +364,30 @@ void save_linedList(linedList* pnode)
 		pnode = pnode->next;
 	}
 	fclose(database);
+}
+
+void getPath(Request request, char *path)
+{
+	/*
+	desc -- 从请求中获取请求路径
+	Arguments -- 请求和返回路径
+	*/
+
+	sscanf(request, "%*[^ ] %[^ ]", path);
+}
+
+char* getArgument(char* path)
+{
+	/*
+	desc -- 从请求路径中获取参数
+	Arguments -- 请求路径
+	returns -- 请求参数
+	*/
+	char* start = strchr(path, '=');
+	if (start != NULL)
+	{
+		char *argument = malloc(strlen(start));
+		return strcpy(argument, start + 1);
+	}
+	return NULL;
 }

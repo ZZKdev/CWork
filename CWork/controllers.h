@@ -5,11 +5,10 @@
 #define CONNECT_ERROR -1
 #define REQUEST_START_NUMBER 4
 #define REQUEST_END_NUMBER 218
-#define deBug printf
 #define SEARCH_ADCODE "/v3/place/text?offset=1&page=1&key=c5120cdde367302714edd8b76712fe07&extensions=all&keywords="
 #define SEARCH_WEATHER_STRING "/v3/weather/weatherInfo?key=c5120cdde367302714edd8b76712fe07&city="
 #define PREDICT_WEATHER_STRING "/v3/weather/weatherInfo?key=c5120cdde367302714edd8b76712fe07&extensions=all&city="
-
+#define Request char*
 
 typedef struct weatherInfo {
 	char city[24];
@@ -58,4 +57,6 @@ linedList* create_linedList();
 void free_linedList(linedList* pnode);
 linedList* delete_node(linedList* phead, char *address);
 void save_linedList(linedList* pnode);
+void getPath(Request request, char *path);
+char* getArgument(char* path);
 #endif
