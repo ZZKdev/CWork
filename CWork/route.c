@@ -5,8 +5,6 @@
 #include <string.h>
 #include <stdio.h>
 
-
-
 View viewRoute(Request request)
 {
 	/*
@@ -29,6 +27,7 @@ View viewRoute(Request request)
 		{"/deletepost", deleteView},
 		{ "/", indexView }
 	};
+
 	for (i = 0; i < sizeof(urlPatterns) / sizeof(UrlPattern); i++)
 	{
 		if (strncmp(urlPatterns[i].url, path, strlen(urlPatterns[i].url) == 1 ? 2 : strlen(urlPatterns[i].url)) == 0)
@@ -37,6 +36,4 @@ View viewRoute(Request request)
 		}
 	}
 	return strcat(view, "<h1>404</h1>");
-
 }
-
