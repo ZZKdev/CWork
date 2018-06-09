@@ -33,10 +33,10 @@ typedef struct weather_predictInfo {
 	char reporttime[32];
 }weather_predictInfo;
 
-typedef struct lineList {
+typedef struct linedList {
 	char address[64];
 	char content[1024];
-	struct lineList* next;
+	struct linedList* next;
 }linedList;
 
 
@@ -59,4 +59,5 @@ linedList* delete_node(linedList* phead, char *address);
 void save_linedList(linedList* pnode);
 void getPath(Request request, char *path);
 char* getArgument(char* path);
+char* readEntireFile(const char *fileName);
 #endif

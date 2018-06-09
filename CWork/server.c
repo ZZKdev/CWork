@@ -1,9 +1,18 @@
-#include <WinSock2.h>
+﻿#include <WinSock2.h>
 #include <stdio.h>
 #include "controllers.h"
 #include "route.h"
 #include "view.h"
 #include "server.h"
+
+cJSON* loadConfig()
+{
+	char* buffer = readEntireFile("config.txt");
+	cJSON* root = cJSON_Parse(buffer);
+
+	free(buffer);
+	return root;
+}
 
 int initServer()
 {
@@ -20,8 +29,6 @@ int initServer()
 	return servSock;
 }
 
-
-
 void serverRun(int servSock)
 {
 	SOCKADDR clientAddr;
@@ -31,13 +38,14 @@ void serverRun(int servSock)
 	{
 		int clientsock = accept(servSock, (SOCKADDR*)&clientAddr, &iSize);
 		recv(clientsock, request, 4096, 0);
-		log("\nrecv:\n%s\n",request);
+		printf("正在处理请求...\n");
 		View responseView = viewRoute(request);
 		send(clientsock, responseView, strlen(responseView), 0);
 		memset(request, 0, sizeof(request));
-		/*send(clientsock, "testsetestsetsetsetsetsetse", 20, 0);*/
+	
 		shutdown(clientsock, SD_SEND);
 		free(responseView);
 		closesocket(clientsock);
+		printf("处理完成，等待下一个请求...\n");
 	}
 }

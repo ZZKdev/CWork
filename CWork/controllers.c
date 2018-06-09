@@ -7,7 +7,7 @@
 void setUp()
 {
 	/*
-	desc -- 加载并初始化dll
+		desc -- 加载并初始化dll
 	*/
 #pragma comment(lib, "ws2_32.lib")
 	WSADATA wsaData;
@@ -17,9 +17,9 @@ void setUp()
 int linkTarget(char *ip, short port)
 {
 	/*
-	desc -- 与目标主机建立连接
-	Arguments -- ip和端口号
-	returns -- 套接字
+		desc -- 与目标主机建立连接
+		Arguments -- ip和端口号
+		returns -- 套接字
 	*/
 
 	SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -42,9 +42,9 @@ int linkTarget(char *ip, short port)
 char* sendRequest(int sock, char *url)
 {
 	/*
-	desc -- 向指定URL发送请求
-	Arguments -- 套接字和URL
-	Returns -- 响应头
+		desc -- 向指定URL发送请求
+		Arguments -- 套接字和URL
+		Returns -- 响应头
 	*/
 	char request[1024] = { 0 };
 	makeRequest(url, request);
@@ -66,8 +66,8 @@ char* sendRequest(int sock, char *url)
 void getPath(Request request, char *path)
 {
 	/*
-	desc -- 从请求中获取请求路径
-	Arguments -- 请求和返回路径
+		desc -- 从请求中获取请求路径
+		Arguments -- 请求和返回路径
 	*/
 
 	sscanf(request, "%*[^ ] %[^ ]", path);
@@ -76,9 +76,9 @@ void getPath(Request request, char *path)
 char* getArgument(char* path)
 {
 	/*
-	desc -- 从请求路径中获取参数
-	Arguments -- 请求路径
-	returns -- 请求参数
+		desc -- 从请求路径中获取参数
+		Arguments -- 请求路径
+		returns -- 请求参数
 	*/
 	char* start = strchr(path, '=');
 	if (start != NULL)
@@ -92,8 +92,8 @@ char* getArgument(char* path)
 void fetchAdcode(char *jsonString, char *adcode)
 {
 	/*
-	desc -- 在json字符串中寻找adocde
-	Arguments -- json字符串和返回的adcode
+		desc -- 在json字符串中寻找adocde
+		Arguments -- json字符串和返回的adcode
 	*/
 	cJSON* jsonRoot = cJSON_Parse(jsonString);
 	cJSON* jsonPois = cJSON_GetObjectItem(jsonRoot, "pois");
@@ -105,8 +105,8 @@ void fetchAdcode(char *jsonString, char *adcode)
 void makeRequest(char* url, char* request)
 {
 	/*
-	desc -- 根据指定URL制作一个请求头
-	Arguments -- URL和请求头的指针
+		desc -- 根据指定URL制作一个请求头
+		Arguments -- URL和请求头的指针
 	*/
 	FILE* requestFile = NULL;
 	if ((requestFile = fopen("request", "rb")) == NULL)
@@ -122,12 +122,12 @@ void makeRequest(char* url, char* request)
 	fclose(requestFile);
 }
 
-int hex2dec(char c)
+int hexToDec(char c)
 {
 	/*
-	desc -- 将16进制数转成10进制数
-	arguments -- 要转换的16进制数
-	returns -- 返回转换完成的10进制数
+		desc -- 将16进制数转成10进制数
+		arguments -- 要转换的16进制数
+		returns -- 返回转换完成的10进制数
 	*/
 	if ('0' <= c && c <= '9')
 	{
@@ -150,8 +150,8 @@ int hex2dec(char c)
 void decode(char* destination)
 {
 	/*
-	desc -- 将url编码的字符串解码
-	arguments -- 要转化的目标字符串
+		desc -- 将url编码的字符串解码
+		arguments -- 要转化的目标字符串
 	*/
 	int i = 0;
 	int len = strlen(destination);
@@ -169,7 +169,7 @@ void decode(char* destination)
 		{
 			c1 = destination[++i];
 			c0 = destination[++i];
-			num = hex2dec(c1) * 16 + hex2dec(c0);
+			num = hexToDec(c1) * 16 + hexToDec(c0);
 			result[res_len++] = num;
 		}
 	}
@@ -181,8 +181,8 @@ void decode(char* destination)
 void fetchContent(char *response_or_request, char *content)
 {
 	/*
-	desc -- 从整个响应或请求中获取其中的响应内容或请求内容
-	Arguments -- 响应或请求、返回的内容
+		desc -- 从整个响应或请求中获取其中的响应内容或请求内容
+		Arguments -- 响应或请求、返回的内容
 	*/
 	strcpy(content, strstr(response_or_request, "\r\n\r\n") + 4);
 }
@@ -190,8 +190,8 @@ void fetchContent(char *response_or_request, char *content)
 void setResponseHeader(char* response)
 {
 	/*
-	desc -- 给响应设置响应头
-	Arguments -- 要设置响应头的响应
+		desc -- 给响应设置响应头
+		Arguments -- 要设置响应头的响应
 	*/
 	char* Header = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n";
 	strcat(response, Header);
@@ -200,8 +200,8 @@ void setResponseHeader(char* response)
 void fetchWeatherInfo(char *jsonString, weatherInfo* weather)
 {
 	/*
-	desc -- 从json字符串中提取weather信息
-	Arguments -- json字符串和接受天气信息的结构体
+		desc -- 从json字符串中提取weather信息
+		Arguments -- json字符串和接受天气信息的结构体
 	*/
 	cJSON* jsonRoot = cJSON_Parse(jsonString);
 	cJSON* jsonLive = cJSON_GetObjectItem(jsonRoot, "lives");
@@ -219,8 +219,8 @@ void fetchWeatherInfo(char *jsonString, weatherInfo* weather)
 void fetchWeather_predictInfo(char *jsonString, weather_predictInfo* weather)
 {
 	/*
-	desc -- 从json字符串中提取预测的天气信息
-	Arguments -- json字符串和返回的结构体
+		desc -- 从json字符串中提取预测的天气信息
+		Arguments -- json字符串和返回的结构体
 	*/
 	cJSON* jsonRoot = cJSON_Parse(jsonString);
 	cJSON* jsonForecasts = cJSON_GetObjectItem(jsonRoot, "forecasts");
@@ -244,6 +244,25 @@ void fetchWeather_predictInfo(char *jsonString, weather_predictInfo* weather)
 	}
 }
 
+char* readEntireFile(const char *fileName)
+{
+	FILE* file = fopen(fileName, "rb");
+
+	fseek(file, 0, SEEK_END);
+	long fileLength = ftell(file);
+	char* buffer = (char*)malloc(fileLength + 1);
+
+	if (buffer == NULL)
+	{
+		return NULL;
+	}
+	memset(buffer, 0, sizeof(buffer));
+	fseek(file, 0, SEEK_SET);
+	fread(buffer, fileLength, 1, file);
+
+	fclose(file);
+	return buffer;
+}
 
 /*************************链表操作层*********************************/
 
@@ -291,8 +310,8 @@ linedList* create_linedList()
 void free_linedList(linedList* pnode)
 {
 	/*
-	desc -- 释放链表
-	arguments -- 头节点
+		desc -- 释放链表
+		arguments -- 头节点
 	*/
 	linedList* ptemp;
 	while (pnode)

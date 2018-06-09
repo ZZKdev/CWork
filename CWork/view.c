@@ -7,21 +7,17 @@
 
 View indexView(View view, Request request)
 {
-	FILE* indexHtml = NULL;
-	
-	if ((indexHtml = fopen("index.html", "rb")) == NULL)
+	char* bufferFile = readEntireFile("index.html");
+	if (bufferFile == NULL)
 	{
 		fprintf(stderr, "open index.html error!\n");
-		return strcat(view, "<h1>couln't open index.html file</h1>");
+		return strcat(view, u8"<h1>404</h1><p>服务器目录下无index页面</p>");
 	}
-	char bufferFile[4096] = { 0 };
-	fread(bufferFile, 1, 2871, indexHtml);
 	strcat(view, bufferFile);
-	fclose(indexHtml);
 	
+	free(bufferFile);
 	return view;
 }
-
 
 View weatherView(View view, Request request)
 {
@@ -47,7 +43,6 @@ View weatherView(View view, Request request)
 	free(weather);
 	return view;
 }
-
 
 View weather_predictView(View view, Request request)
 {
@@ -101,22 +96,18 @@ View saveView(View view, Request request)
 
 View showView(View view, Request request)
 {
-	linedList* pnode = create_linedList();
+	linedList* phead = create_linedList();
+	linedList* pnode = phead;
 	if (pnode == NULL)
 	{
 		return strcat(view, u8"<h2>暂无信息</h2>");
 	}
 	while(pnode)
 	{
-		strcat(view, u8"地点：");
-		strcat(view, pnode->address);
-		strcat(view, "</br>");
-		strcat(view, u8"记录：");
-		strcat(view, pnode->content);
-		strcat(view, "</br>");
+		sprintf(view + strlen(view), u8"地点：%s</br>记录：%s</br>", pnode->address, pnode->content);
 		pnode = pnode->next;
 	}
-	free_linedList(pnode);
+	free_linedList(phead);
 	return view;
 }
 
@@ -124,13 +115,12 @@ View deleteView(View view, Request request)
 {
 	char content[4096] = { 0 };
 	fetchContent(request, content);
-	printf("\n\ncontent:\n%s", content);
 	decode(content);
-	printf("\ndecodecontent:%s\n",content);
+
 	char address[128] = { 0 };
 	sscanf(content, "%*[^=]=%[^&]", address);
-	linedList* phead = create_linedList();
 
+	linedList* phead = create_linedList();
 	phead = delete_node(phead, address);
 	save_linedList(phead);
 
@@ -146,19 +136,19 @@ View searchView(View view, Request request)
 	sscanf(content, "%*[^=]=%[^&]", address);
 	decode(address);
 
-	int flag = 0;
+	int isSearch = 0;
 	linedList* phead = create_linedList();
 	linedList* pnode = phead;
 	while (pnode)
 	{
 		if (strcmp(pnode->address, address) == 0)
 		{
-			flag = 1;
+			isSearch = 1;
 			sprintf(view + strlen(view), u8"地点：%s</br>记录：%s</br>", pnode->address, pnode->content);
 		}
 		pnode = pnode->next;
 	}
-	if (flag == 0)
+	if (isSearch == 0)
 	{
 		strcat(view, u8"<h1>无此地点记录</h1>");
 	}
@@ -168,21 +158,21 @@ View searchView(View view, Request request)
 
 View sortView(View view, Request request)
 {
-	linedList* phead = create_linedList();
-	linedList* pnode;
-	linedList* pnodename;
+	//linedList* phead = create_linedList();
+	//linedList* pnode;
+	//linedList* pnodename;
 
-	for (pnode = phead; pnode; pnode = pnode->next)
-	{
-		for (pnodename = pnode->next; pnodename; pnodename = pnodename->next)
-		{
-			if (strcmp(pnode->address, pnodename->address) == 0)
-			{
+	//for (pnode = phead; pnode; pnode = pnode->next)
+	//{
+	//	for (pnodename = pnode->next; pnodename; pnodename = pnodename->next)
+	//	{
+	//		if (strcmp(pnode->address, pnodename->address) == 0 && strcmp(pnodename->address, )
+	//		{
 
-			}
-		}
-	}
+	//		}
+	//	}
+	//}
 
-	save_linedList(phead);
+	//save_linedList(phead);
 	return strcat(view, u8"<h1>排序成功</h1>");
 }
