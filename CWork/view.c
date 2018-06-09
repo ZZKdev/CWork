@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 View indexView(View view, Request request)
 {
@@ -14,10 +15,10 @@ View indexView(View view, Request request)
 		return strcat(view, "<h1>couln't open index.html file</h1>");
 	}
 	char bufferFile[4096] = { 0 };
-	fread(bufferFile, 1, 2522, indexHtml);
+	fread(bufferFile, 1, 2500, indexHtml);
 	strcat(view, bufferFile);
 	fclose(indexHtml);
-
+	
 	return view;
 }
 
@@ -83,7 +84,7 @@ View weather_predictView(View view, Request request)
 
 View saveView(View view, Request request)
 {
-	char* post[4096] = { 0 };
+	char post[4096] = { 0 };
 	fetchContent(request, post);
 	decode(post);
 	strcat(post, SEPARATOR);
@@ -121,11 +122,12 @@ View showView(View view, Request request)
 
 View deleteView(View view, Request request)
 {
-	char* content[128] = { 0 };
+	char content[4096] = { 0 };
 	fetchContent(request, content);
 	printf("\n\ncontent:\n%s", content);
 	decode(content);
-	char* address[128] = { 0 };
+	printf("\ndecodecontent:%s\n",content);
+	char address[128] = { 0 };
 	sscanf(content, "%*[^=]=%[^&]", address);
 	linedList* phead = create_linedList();
 

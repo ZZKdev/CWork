@@ -250,8 +250,8 @@ void fetchWeather_predictInfo(char *jsonString, weather_predictInfo* weather)
 linedList* create_linedList()
 {
 	/*
-	desc -- 读取数据库文件建立链表
-	returns -- 返回头节点
+		desc -- 读取数据库文件建立链表
+		returns -- 返回头节点
 	*/
 	FILE* database = fopen("database", "rb");
 	if (database == NULL)
@@ -270,14 +270,17 @@ linedList* create_linedList()
 		if (phead == NULL)
 		{
 			phead = malloc(sizeof(linedList));
+			memset(phead, 0, sizeof(linedList));
 			pnode = phead;
 		}
 		else
 		{
 			pnode->next = malloc(sizeof(linedList));
+			memset(pnode->next, 0, sizeof(linedList));
 			pnode = pnode->next;
 		}
 		pnode->next = NULL;
+		
 		sscanf(buffer, "%*[^=]=%[^&]", pnode->address);
 		sscanf(buffer, "%*[^&]&%*[^=]=%[^&]", pnode->content);
 	}
@@ -303,12 +306,16 @@ void free_linedList(linedList* pnode)
 linedList* delete_node(linedList* phead, char *address)
 {
 	/*
-	desc -- 删除目标地点记录
-	arguments -- 头节点和目标地点
-	returns -- 头节点
+		desc -- 删除目标地点记录
+		arguments -- 头节点和目标地点
+		returns -- 头节点
 	*/
 	linedList* pnode = phead;
+	linedList* ptemp = NULL;
+	printf("\nplen:%d", strlen(phead->address));
 	printf("\nlen:%d", strlen(address));
+	printf("\npaddress:%s\n", phead->address);
+	printf("address:%s\n", address);
 	while (pnode)
 	{
 		if (pnode == phead && strcmp(phead->address, address) == 0)
@@ -320,8 +327,9 @@ linedList* delete_node(linedList* phead, char *address)
 		}
 		else if (pnode->next != NULL && strcmp(pnode->next->address, address) == 0)
 		{
-			pnode->next = pnode->next->next;
+			ptemp = pnode->next->next;
 			free(pnode->next);
+			pnode->next = ptemp;
 			continue;
 		}
 		pnode = pnode->next;
@@ -332,14 +340,14 @@ linedList* delete_node(linedList* phead, char *address)
 void save_linedList(linedList* pnode)
 {
 	/*
-	desc -- 保存链表信息到数据库
-	arguments -- 头节点
+		desc -- 保存链表信息到数据库
+		arguments -- 头节点
 	*/
 	FILE* database = fopen("database", "wb");
 	while (pnode)
 	{
 		fprintf(database, "address=%s", pnode->address);
-		fprintf(database, "&content=%s\r\n", pnode->content);
+		fprintf(database, "&content=%s", pnode->content);
 		pnode = pnode->next;
 	}
 	fclose(database);
