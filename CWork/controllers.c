@@ -257,6 +257,7 @@ char* readEntireFile(const char *fileName)
 		return NULL;
 	}
 	memset(buffer, 0, sizeof(buffer));
+
 	fseek(file, 0, SEEK_SET);
 	fread(buffer, fileLength, 1, file);
 

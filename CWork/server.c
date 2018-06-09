@@ -9,7 +9,6 @@ cJSON* loadConfig()
 {
 	char* buffer = readEntireFile("config.txt");
 	cJSON* root = cJSON_Parse(buffer);
-
 	free(buffer);
 	return root;
 }
@@ -17,14 +16,19 @@ cJSON* loadConfig()
 int initServer()
 {
 	setUp();
+	cJSON* root = loadConfig();
+	char* ip = cJSON_GetObjectItem(root, "ip")->valuestring;
+	int port = cJSON_GetObjectItem(root, "port")->valueint;
+
 	int servSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	struct sockaddr_in sockAddr;
 	memset(&sockAddr, 0, sizeof(sockAddr));
-	sockAddr.sin_addr.s_addr = inet_addr("172.24.81.114");
-	sockAddr.sin_port = htons(80);
+	sockAddr.sin_addr.s_addr = inet_addr(ip);
+	sockAddr.sin_port = htons(port);
 	sockAddr.sin_family = PF_INET;
 	bind(servSock, (SOCKADDR*)&sockAddr, sizeof(SOCKADDR));
 
+	cJSON_Delete(root);
 	listen(servSock, 20);
 	return servSock;
 }
