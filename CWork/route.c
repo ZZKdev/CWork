@@ -21,6 +21,7 @@ View viewRoute(Request request)
 	
 	int i;
 	UrlPattern urlPatterns[] = {
+		{"/sortpost", sortView},
 		{"/searchpost", searchView},
 		{"/searchWeather", weatherView},
 		{"/predictWeather", weather_predictView},

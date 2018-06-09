@@ -15,7 +15,7 @@ View indexView(View view, Request request)
 		return strcat(view, "<h1>couln't open index.html file</h1>");
 	}
 	char bufferFile[4096] = { 0 };
-	fread(bufferFile, 1, 2779, indexHtml);
+	fread(bufferFile, 1, 2871, indexHtml);
 	strcat(view, bufferFile);
 	fclose(indexHtml);
 	
@@ -164,4 +164,25 @@ View searchView(View view, Request request)
 	}
 	free_linedList(phead);
 	return view;
+}
+
+View sortView(View view, Request request)
+{
+	linedList* phead = create_linedList();
+	linedList* pnode;
+	linedList* pnodename;
+
+	for (pnode = phead; pnode; pnode = pnode->next)
+	{
+		for (pnodename = pnode->next; pnodename; pnodename = pnodename->next)
+		{
+			if (strcmp(pnode->address, pnodename->address) == 0)
+			{
+
+			}
+		}
+	}
+
+	save_linedList(phead);
+	return strcat(view, u8"<h1>排序成功</h1>");
 }

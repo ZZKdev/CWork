@@ -5,7 +5,7 @@
 #include "view.h"
 #include "server.h"
 
-int loadConfig()
+int initServer()
 {
 	setUp();
 	int servSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
