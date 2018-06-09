@@ -95,7 +95,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -127,6 +127,7 @@
   <ItemGroup>
     <ClInclude Include="cJSON.h" />
     <ClInclude Include="controllers.h" />
+    <ClInclude Include="models.h" />
     <ClInclude Include="route.h" />
     <ClInclude Include="server.h" />
     <ClInclude Include="view.h" />

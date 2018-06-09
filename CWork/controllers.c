@@ -390,7 +390,7 @@ void getAdcode(char *address,char *adcode)
 	*/
 	int sock = linkTarget("106.11.12.1", 80);
 	char url[256] = { 0 };
-	strcat(url, SEARCH_ADCODE);
+	strcat(url, SEARCH_ADCODE_STRING);
 	strcat(url, address);
 
 	char* response = sendRequest(sock, url);

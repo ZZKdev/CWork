@@ -1,8 +1,6 @@
 #pragma once
+#include "models.h"
 
-#define View char*
-#define SEPARATOR "\r\n"
-#define Request char*
 
 View indexView(View view, Request request);
 View weatherView(View view, Request request);
