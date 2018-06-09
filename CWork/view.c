@@ -15,7 +15,7 @@ View indexView(View view, Request request)
 		return strcat(view, "<h1>couln't open index.html file</h1>");
 	}
 	char bufferFile[4096] = { 0 };
-	fread(bufferFile, 1, 2500, indexHtml);
+	fread(bufferFile, 1, 2779, indexHtml);
 	strcat(view, bufferFile);
 	fclose(indexHtml);
 	
@@ -135,4 +135,33 @@ View deleteView(View view, Request request)
 	save_linedList(phead);
 
 	return strcat(view, u8"<h1>删除成功</h1>");
+}
+
+View searchView(View view, Request request)
+{
+	char content[128] = { 0 };
+	fetchContent(request, content);
+	
+	char address[128] = { 0 };
+	sscanf(content, "%*[^=]=%[^&]", address);
+	decode(address);
+
+	int flag = 0;
+	linedList* phead = create_linedList();
+	linedList* pnode = phead;
+	while (pnode)
+	{
+		if (strcmp(pnode->address, address) == 0)
+		{
+			flag = 1;
+			sprintf(view + strlen(view), u8"地点：%s</br>记录：%s</br>", pnode->address, pnode->content);
+		}
+		pnode = pnode->next;
+	}
+	if (flag == 0)
+	{
+		strcat(view, u8"<h1>无此地点记录</h1>");
+	}
+	free_linedList(phead);
+	return view;
 }
