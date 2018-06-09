@@ -246,6 +246,11 @@ void fetchWeather_predictInfo(char *jsonString, weather_predictInfo* weather)
 
 char* readEntireFile(const char *fileName)
 {
+	/*
+		desc -- 读取整个文件并返回字符串
+		Arguments -- 文件名
+		returns -- 读取完的字符串
+	*/
 	FILE* file = fopen(fileName, "rb");
 
 	fseek(file, 0, SEEK_END);
@@ -256,10 +261,10 @@ char* readEntireFile(const char *fileName)
 	{
 		return NULL;
 	}
-	memset(buffer, 0, sizeof(buffer));
 
 	fseek(file, 0, SEEK_SET);
 	fread(buffer, fileLength, 1, file);
+	buffer[fileLength] = '\0';
 
 	fclose(file);
 	return buffer;

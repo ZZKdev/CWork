@@ -132,11 +132,9 @@
     <ClInclude Include="view.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="config" />
     <None Include="index.html" />
     <None Include="request" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="config.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

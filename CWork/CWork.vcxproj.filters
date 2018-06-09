@@ -58,10 +58,8 @@
     <None Include="index.html">
       <Filter>资源文件</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="config.txt">
+    <None Include="config">
       <Filter>资源文件</Filter>
-    </Text>
+    </None>
   </ItemGroup>
 </Project>
