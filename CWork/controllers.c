@@ -284,7 +284,7 @@ linedList* create_linedList()
 		return NULL;
 	}
 	char buffer[2048] = { 0 };
-	char id[32] = { 0 };
+	
 
 	linedList* phead = NULL;
 	linedList* pnode = NULL;
@@ -307,9 +307,8 @@ linedList* create_linedList()
 		
 		sscanf(buffer, "%*[^=]=%[^&]", pnode->address);
 		sscanf(buffer, "%*[^&]&%*[^=]=%[^&]", pnode->content);
-		sscanf(buffer, "%*[^&]&%*[^&]%*[^=]=%[^&]", id);
-		pnode->id = atoi(id);
-		memset(id, 0, sizeof(id));
+		sscanf(buffer, "%*[^&]&%*[^&]%*[^=]=%[^&]", pnode->id);
+		pnode->id[strlen(pnode->id) - 2] = '\0';
 	}
 	fclose(database);
 	return phead;

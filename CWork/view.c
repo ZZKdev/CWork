@@ -147,7 +147,7 @@ View searchView(View view, Request request)
 		if (strcmp(pnode->address, address) == 0)
 		{
 			isSearch = 1;
-			sprintf(view + strlen(view), u8"地点：%s</br>记录：%s</br>", pnode->address, pnode->content);
+			sprintf(view + strlen(view), u8"<form action=\"/editpost\" method=\"post\">地点：%s<br />记录：<textarea cols=\"87\" rows=\"5\" name=\"content\">%s</textarea><br /><input type=\"text\" name=\"id\" value=\"%s\" style=\"display:none\"/><input type=\"submit\" value=\"修改\" style=\"float : right\" /></form>", pnode->address, pnode->content, pnode->id);
 		}
 		pnode = pnode->next;
 	}
@@ -159,23 +159,33 @@ View searchView(View view, Request request)
 	return view;
 }
 
-View sortView(View view, Request request)
+View editView(View view, Request request)
 {
-	//linedList* phead = create_linedList();
-	//linedList* pnode;
-	//linedList* pnodename;
+	char content[1024] = { 0 };
+	fetchContent(request, content);
+	decode(content);
+	char id[32] = { 0 };
+	char postContent[1024] = { 0 };
+	sscanf(content, "%*[^=]=%[^&]", postContent);
+	sscanf(content, "%*[^&]&%*[^=]=%[^&]", id);
 
-	//for (pnode = phead; pnode; pnode = pnode->next)
-	//{
-	//	for (pnodename = pnode->next; pnodename; pnodename = pnodename->next)
-	//	{
-	//		if (strcmp(pnode->address, pnodename->address) == 0 && strcmp(pnodename->address, )
-	//		{
+	linedList* phead = create_linedList();
+	linedList* pnode = phead;
 
-	//		}
-	//	}
-	//}
+	printf("\nid=%s\n", id);
 
-	//save_linedList(phead);
-	return strcat(view, u8"<h1>排序成功</h1>");
+	while (pnode)
+	{
+		printf("pnode->id = %s\n", pnode->id);
+		printf("result=%d\n", strcmp(pnode->id, id));
+		if (strcmp(pnode->id, id) == 0)
+		{
+			strcpy(pnode->content, postContent);
+			break;
+		}
+		pnode = pnode->next;
+	}
+	save_linedList(phead);
+	free_linedList(phead);
+	return strcat(view, u8"<h1>修改成功</h1>");
 }
