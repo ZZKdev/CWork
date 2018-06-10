@@ -378,57 +378,6 @@ void save_linedList(linedList* pnode)
 	fclose(database);
 }
 
-//linedList* sort_linedList(linedList* phead)
-//{
-//	linedList* pnode[5] = { NULL, NULL, NULL, NULL, NULL };
-//
-//	for (pnode[0] = phead; pnode[0]; pnode[0] = pnode[0]->next)
-//	{
-//		for (pnode[1] = pnode[0]->next; pnode[1]; pnode[1] = pnode[1]->next)
-//		{
-//			if (strcmp(pnode[0]->address, pnode[1]->address) < 0)
-//			{
-//				if (pnode[0] == phead && pnode[3] == NULL)
-//				{
-//					phead = pnode[1];
-//					pnode[2] = pnode[1]->next;
-//					pnode[1]->next = pnode[0];
-//					pnode[0]->next = pnode[2];
-//				}
-//				else if(pnode[0] == phead)
-//				{
-//					phead = pnode[1];
-//					pnode[2] = pnode[1]->next;
-//					pnode[1]->next = pnode[0]->next;
-//					pnode[0]->next = pnode[2];
-//					pnode[3]->next = pnode[0];
-//				}
-//				else if (pnode[3] == NULL)
-//				{
-//					pnode[2] = pnode[1]->next;
-//					pnode[1]->next = pnode[0];
-//					pnode[0]->next = pnode[2];
-//					pnode[4]->next = pnode[1];
-//				}
-//				else
-//				{
-//					pnode[2] = pnode[1]->next;
-//					pnode[1]->next = pnode[0]->next;
-//					pnode[0]->next = pnode[2];
-//					pnode[3]->next = pnode[0];
-//					pnode[4]->next = pnode[1];
-//				}
-//				pnode[2] = pnode[1];
-//				pnode[1] = pnode[0];
-//				pnode[0] = pnode[2];
-//			}
-//			pnode[3] = pnode[1];
-//		}
-//		pnode[3] = NULL;
-//		pnode[4] = pnode[0];
-//	}
-//	return phead;
-//}
 linedList* sort_linedList(linedList* phead)
 {
 	/*
