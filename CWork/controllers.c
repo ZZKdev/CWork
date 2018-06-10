@@ -108,18 +108,10 @@ void makeRequest(char* url, char* request)
 		desc -- 根据指定URL制作一个请求头
 		Arguments -- URL和请求头的指针
 	*/
-	FILE* requestFile = NULL;
-	if ((requestFile = fopen("request", "rb")) == NULL)
-	{
-		fprintf(stderr, "open requestFile error!\n");
-		return;
-	}
-
-	fread(request, 1, REQUEST_START_NUMBER, requestFile);
+	char* buffer = readEntireFile("request");
+	strncat(request, buffer, REQUEST_START_NUMBER);
 	strcat(request, url);
-	fread(&request[strlen(request)], 1, REQUEST_END_NUMBER, requestFile);
-
-	fclose(requestFile);
+	strcat(request, &buffer[REQUEST_START_NUMBER]);
 }
 
 int hexToDec(char c)
