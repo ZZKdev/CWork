@@ -20,6 +20,10 @@ cJSON* loadConfig()
 
 int initServer()
 {
+	/*
+		desc -- 初始化服务器并返回服务器套接字
+		returns -- 服务器套接字
+	*/
 	setUp();
 	cJSON* root = loadConfig();
 	
@@ -41,6 +45,10 @@ int initServer()
 
 void serverRun(int servSock)
 {
+	/*
+		desc -- 使服务器持续运行接收请求
+		Arguments -- 服务器套接字
+	*/
 	SOCKADDR clientAddr;
 	int iSize = sizeof(SOCKADDR);
 	char request[4096] = { 0 };

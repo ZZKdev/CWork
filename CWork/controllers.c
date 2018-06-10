@@ -114,24 +114,24 @@ void makeRequest(char* url, char* request)
 	strcat(request, &buffer[REQUEST_START_NUMBER]);
 }
 
-int hexToDec(char c)
+int hexToDec(char number)
 {
 	/*
 		desc -- 将16进制数转成10进制数
 		arguments -- 要转换的16进制数
 		returns -- 返回转换完成的10进制数
 	*/
-	if ('0' <= c && c <= '9')
+	if ('0' <= number && number <= '9')
 	{
-		return c - '0';
+		return number - '0';
 	}
-	else if ('a' <= c && c <= 'f')
+	else if ('a' <= number && number <= 'f')
 	{
-		return c - 'a' + 10;
+		return number - 'a' + 10;
 	}
-	else if ('A' <= c && c <= 'F')
+	else if ('A' <= number && number <= 'F')
 	{
-		return c - 'A' + 10;
+		return number - 'A' + 10;
 	}
 	else
 	{

@@ -7,6 +7,11 @@
 
 View indexView(View view, Request request)
 {
+	/*
+		desc -- 返回首页视图
+		Arguments -- 视图和请求
+		returns -- 视图
+	*/
 	char* bufferFile = readEntireFile("index.html");
 	if (bufferFile == NULL)
 	{
@@ -21,6 +26,11 @@ View indexView(View view, Request request)
 
 View weatherView(View view, Request request)
 {
+	/*
+		desc -- 返回天气视图
+		Arguments -- 视图和请求
+		returns -- 视图
+	*/
 	char path[256] = { 0 };
 	getPath(request, path);
 	char* address = getArgument(path);
@@ -46,6 +56,11 @@ View weatherView(View view, Request request)
 
 View weather_predictView(View view, Request request)
 {
+	/*
+		desc -- 返回预测天气视图
+		Arguments -- 视图和请求
+		returns -- 视图
+	*/
 	int i;
 	char path[256] = { 0 };
 	getPath(request, path);
@@ -79,6 +94,11 @@ View weather_predictView(View view, Request request)
 
 View saveView(View view, Request request)
 {
+	/*
+		desc -- 返回保存视图
+		Arguments -- 视图和请求
+		returns -- 视图
+	*/
 	char post[4096] = { 0 };
 	fetchContent(request, post);
 	decode(post);
@@ -97,6 +117,11 @@ View saveView(View view, Request request)
 
 View showView(View view, Request request)
 {
+	/*
+		desc -- 返回显示记录的视图
+		Arguments -- 视图和请求
+		returns -- 视图
+	*/
 	linedList* phead = create_linedList();
 	phead = sort_linedList(phead);
 	linedList* pnode = phead;
@@ -116,6 +141,11 @@ View showView(View view, Request request)
 
 View deleteView(View view, Request request)
 {
+	/*
+		desc -- 返回删除记录视图
+		Arguments -- 视图和请求
+		returns -- 视图
+	*/
 	char content[4096] = { 0 };
 	fetchContent(request, content);
 	decode(content);
@@ -132,6 +162,11 @@ View deleteView(View view, Request request)
 
 View searchView(View view, Request request)
 {
+	/*
+		desc -- 返回搜索视图
+		Arguments -- 视图和请求
+		returns -- 视图
+	*/
 	char content[128] = { 0 };
 	fetchContent(request, content);
 	
@@ -161,6 +196,11 @@ View searchView(View view, Request request)
 
 View editView(View view, Request request)
 {
+	/*
+		desc -- 返回编辑视图
+		Arguments -- 视图和请求
+		returns -- 视图
+	*/
 	char content[1024] = { 0 };
 	fetchContent(request, content);
 	decode(content);
