@@ -4,4 +4,4 @@
 
 cJSON* loadConfig();
 int initServer();
-void serverRun();
+void serverRun(int servSock);
