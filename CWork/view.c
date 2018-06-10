@@ -97,11 +97,13 @@ View saveView(View view, Request request)
 View showView(View view, Request request)
 {
 	linedList* phead = create_linedList();
+	phead = sort_linedList(phead);
 	linedList* pnode = phead;
 	if (pnode == NULL)
 	{
 		return strcat(view, u8"<h2>暂无信息</h2>");
 	}
+
 	while(pnode)
 	{
 		sprintf(view + strlen(view), u8"地点：%s</br>记录：%s</br>", pnode->address, pnode->content);
