@@ -284,8 +284,7 @@ linedList* create_linedList()
 		return NULL;
 	}
 	char buffer[2048] = { 0 };
-	char title[64] = { 0 };
-	char content[1024] = { 0 };
+	char id[32] = { 0 };
 
 	linedList* phead = NULL;
 	linedList* pnode = NULL;
@@ -308,6 +307,9 @@ linedList* create_linedList()
 		
 		sscanf(buffer, "%*[^=]=%[^&]", pnode->address);
 		sscanf(buffer, "%*[^&]&%*[^=]=%[^&]", pnode->content);
+		sscanf(buffer, "%*[^&]&%*[^&]%*[^=]=%[^&]", id);
+		pnode->id = atoi(id);
+		memset(id, 0, sizeof(id));
 	}
 	fclose(database);
 	return phead;
@@ -369,10 +371,12 @@ void save_linedList(linedList* pnode)
 		arguments -- 头节点
 	*/
 	FILE* database = fopen("database", "wb");
+	int id = 0;
 	while (pnode)
 	{
 		fprintf(database, "address=%s", pnode->address);
 		fprintf(database, "&content=%s", pnode->content);
+		fprintf(database, "&id=%d\r\n", id++);
 		pnode = pnode->next;
 	}
 	fclose(database);
@@ -434,6 +438,19 @@ linedList* sort_linedList(linedList* phead)
 	return phead;
 }
 
+int get_maxId()
+{
+	linedList* phead = create_linedList();
+	linedList* pnode = phead;
+	int maxId = -1;
+	while (pnode)
+	{
+		pnode = pnode->next;
+		maxId++;
+	}
+	free_linedList(phead);
+	return maxId;
+}
 
 /***************************应用层*****************************/
 

@@ -82,7 +82,8 @@ View saveView(View view, Request request)
 	char post[4096] = { 0 };
 	fetchContent(request, post);
 	decode(post);
-	strcat(post, SEPARATOR);
+	sprintf(post + strlen(post), "&id=%d\r\n\0", (get_maxId() + 1));
+	
 	
 	
 	FILE* database = fopen("database", "ab+");

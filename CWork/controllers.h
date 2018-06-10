@@ -30,4 +30,5 @@ void getPath(Request request, char *path);
 char* getArgument(char* path);
 char* readEntireFile(const char *fileName);
 linedList* sort_linedList(linedList* phead);
+int get_maxId();
 #endif

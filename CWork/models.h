@@ -34,5 +34,6 @@ typedef struct weather_predictInfo {
 typedef struct linedList {
 	char address[64];
 	char content[1024];
+	int id;
 	struct linedList* next;
 }linedList;
