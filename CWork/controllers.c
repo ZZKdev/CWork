@@ -338,10 +338,6 @@ linedList* delete_node(linedList* phead, char *address)
 	*/
 	linedList* pnode = phead;
 	linedList* ptemp = NULL;
-	printf("\nplen:%d", strlen(phead->address));
-	printf("\nlen:%d", strlen(address));
-	printf("\npaddress:%s\n", phead->address);
-	printf("address:%s\n", address);
 	while (pnode)
 	{
 		if (pnode == phead && strcmp(phead->address, address) == 0)
@@ -489,8 +485,6 @@ weatherInfo* searchWeather(char *address)
 	char url[256] = { 0 };
 	strcat(url, SEARCH_WEATHER_STRING);
 	strcat(url, adcode);
-
-	printf(adcode);
 
 	int sock = linkTarget("106.11.12.1", 80);
 	char* response = sendRequest(sock, url);

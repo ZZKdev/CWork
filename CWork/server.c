@@ -49,7 +49,7 @@ void serverRun(int servSock)
 		int clientsock = accept(servSock, (SOCKADDR*)&clientAddr, &iSize);
 		recv(clientsock, request, 4096, 0);
 		printf("正在处理请求...\n");
-		printf(request);
+		printf("这是发送过来的请求：\n%s\n", request);
 		View responseView = viewRoute(request);
 		send(clientsock, responseView, strlen(responseView), 0);
 		memset(request, 0, sizeof(request));

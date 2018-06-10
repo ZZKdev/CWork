@@ -172,12 +172,8 @@ View editView(View view, Request request)
 	linedList* phead = create_linedList();
 	linedList* pnode = phead;
 
-	printf("\nid=%s\n", id);
-
 	while (pnode)
 	{
-		printf("pnode->id = %s\n", pnode->id);
-		printf("result=%d\n", strcmp(pnode->id, id));
 		if (strcmp(pnode->id, id) == 0)
 		{
 			strcpy(pnode->content, postContent);
