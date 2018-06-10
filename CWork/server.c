@@ -38,8 +38,11 @@ int initServer()
 	sockAddr.sin_family = PF_INET;
 	bind(servSock, (SOCKADDR*)&sockAddr, sizeof(SOCKADDR));
 	
-	cJSON_Delete(root);
+	
 	listen(servSock, 20);
+	printf("正在监听%s:%d...\n", ip, port);
+	printf("请用游览器打开%s:%d查看系统\n", ip, port);
+	cJSON_Delete(root);
 	return servSock;
 }
 
